@@ -16,6 +16,10 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 
 	const [selectionErrorIds, setSelectionErrorIds] = useState<string[]>([]);
 
+	const [selectionSuccessIds, setSelectionSuccessIds] = useState<string[]>(
+		[],
+	);
+
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const seatRows = Object.keys(seatSelection.seatsByRow).map((rowKey) =>
@@ -24,6 +28,7 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 
 	const submitSelectSeat = useCallback(async () => {
 		setSelectionErrorIds([]);
+		setSelectionSuccessIds([]);
 		setIsSubmitting(true);
 		const selectedSeatsIds = seatSelection.selectedSeat.map(
 			(seat) => seat.id,
@@ -45,17 +50,18 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 				return;
 			}
 
-			if (res.some((r) => !r.success && r.message)) {
-				const filteredErrors = res
-					.filter((r) => !r.success)
-					.map((r) => r.message as string);
+			const filteredErrors = res.filter((r) => !r.success);
 
-				setSelectionErrorIds(
-					res.filter((r) => !r.success).map((r) => r.seatId),
-				);
+			const filteredSuccess = res.filter((r) => r.success);
 
-				filteredErrors.forEach((error) => toast.error(error));
+			if (filteredErrors.length) {
+				setSelectionErrorIds(filteredErrors.map((r) => r.seatId));
+
+				filteredErrors
+					.map((r) => r.message as string)
+					.forEach((error) => toast.error(error));
 			}
+			setSelectionSuccessIds(filteredSuccess.map((r) => r.seatId));
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
@@ -76,6 +82,7 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 							selectedSeat={seatSelection.selectedSeat}
 							onSelectSeat={seatSelection.onSelectSeat}
 							errorIds={selectionErrorIds}
+							successIds={selectionSuccessIds}
 						/>
 					</div>
 				))}
@@ -101,6 +108,7 @@ function SeatsColumns(props: {
 	selectedSeat: ReturnType<typeof useSeatSelection>["selectedSeat"];
 	onSelectSeat: ReturnType<typeof useSeatSelection>["onSelectSeat"];
 	errorIds: string[];
+	successIds: string[];
 }): JSX.Element {
 	const columns = Object.keys(props.seatsByColumn[props.rowKey]);
 
@@ -122,6 +130,7 @@ function SeatsSeats(props: {
 	selectedSeat: ReturnType<typeof useSeatSelection>["selectedSeat"];
 	onSelectSeat: ReturnType<typeof useSeatSelection>["onSelectSeat"];
 	errorIds: string[];
+	successIds: string[];
 }): JSX.Element {
 	const seats =
 		props.seatsByColumn[Number(props.rowKey)][Number(props.columnKey)];
@@ -142,6 +151,7 @@ function SeatsSeat(props: {
 	selectedSeat: ReturnType<typeof useSeatSelection>["selectedSeat"];
 	onSelectSeat: ReturnType<typeof useSeatSelection>["onSelectSeat"];
 	errorIds: string[];
+	successIds: string[];
 }): JSX.Element {
 	const selected = props.selectedSeat.some(
 		(_seat) => _seat.id === props.seat.id,
@@ -158,6 +168,9 @@ function SeatsSeat(props: {
 				"size-10 rounded-full",
 				props.errorIds.includes(props.seat.id)
 					? "ring ring-red-500"
+					: "",
+				props.successIds.includes(props.seat.id)
+					? "ring ring-green-500"
 					: "",
 			)}
 		>
