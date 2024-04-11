@@ -1,4 +1,5 @@
-import { Seats, type Seat } from "@/components/seats";
+import { Seats } from "@/components/seats";
+import { type Seat } from "@/lib/seat";
 
 const seats: Seat[] = [
 	{ id: "A1", column: 1, row: 1, indexFromLeft: 1, status: "empty" },
