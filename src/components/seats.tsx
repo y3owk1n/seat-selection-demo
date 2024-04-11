@@ -2,19 +2,7 @@
 
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { Button } from "./ui/button";
-
-type SeatStatus = "empty" | "occupied" | "temp-occupied";
-
-interface Seat {
-	id: string;
-	column: number;
-	row: number;
-	/**
-	 * Index from left of its own sections and it should start from 1
-	 */
-	indexFromLeft: number;
-	status: SeatStatus;
-}
+import { type Seat } from "@/lib/seat";
 
 interface SeatsProps {
 	seats: Seat[];
@@ -146,4 +134,4 @@ function SeatsSeat(props: {
 	);
 }
 
-export { Seats, type Seat };
+export { Seats };
