@@ -196,7 +196,7 @@ export function pickSeats(
 				results.push({
 					seatId: seatIdx,
 					success: false,
-					message: `Error 2: Selecting seat ${seatIdx} would leave a single seat left or right.`,
+					message: `Selecting seat ${seatIdx} would leave a single seat left or right.`,
 				});
 				continue;
 			}
@@ -212,7 +212,7 @@ export function pickSeats(
 				results.push({
 					seatId: seatIdx,
 					success: false,
-					message: `Error 3: Selecting seat ${seatIdx} would leave a single seat left or right.`,
+					message: `Selecting seat ${seatIdx} would leave a single seat left or right.`,
 				});
 				continue;
 			}
@@ -230,7 +230,7 @@ export function pickSeats(
 				results.push({
 					seatId: seatIdx,
 					success: false,
-					message: `Error 4: Selecting seat ${seatIdx} would leave a single seat left or right.`,
+					message: `Selecting seat ${seatIdx} would leave a single seat left or right.`,
 				});
 				continue;
 			}
