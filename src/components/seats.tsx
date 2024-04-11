@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import { Button } from "./ui/button";
 import { type Seat } from "@/lib/seat";
 import { useSeatSelection } from "@/hooks/use-seat-selection";
@@ -10,8 +10,6 @@ interface SeatsProps {
 }
 
 function Seats({ seats }: SeatsProps): JSX.Element {
-	const [selectedSeat, setSelectedSeat] = useState<Seat[]>([]);
-
 	const seatSelection = useSeatSelection(seats);
 
 	const seatRows = Object.keys(seatSelection.seatsByRow).map((rowKey) =>
@@ -25,12 +23,12 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 					<SeatsColumns
 						seatsByColumn={seatSelection.seatsByColumn}
 						rowKey={rowKey}
-						selectedSeat={selectedSeat}
-						setSelectedSeat={setSelectedSeat}
+						selectedSeat={seatSelection.selectedSeat}
+						setSelectedSeat={seatSelection.setSelectedSeat}
 					/>
 				</div>
 			))}
-			<pre>{JSON.stringify(selectedSeat, null, 2)}</pre>
+			<pre>{JSON.stringify(seatSelection.selectedSeat, null, 2)}</pre>
 		</div>
 	);
 }
