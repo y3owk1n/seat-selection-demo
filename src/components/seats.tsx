@@ -3,6 +3,7 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { Button } from "./ui/button";
 import { type Seat } from "@/lib/seat";
+import { useSeatSelection } from "@/hooks/use-seat-selection";
 
 interface SeatsProps {
 	seats: Seat[];
@@ -11,45 +12,18 @@ interface SeatsProps {
 function Seats({ seats }: SeatsProps): JSX.Element {
 	const [selectedSeat, setSelectedSeat] = useState<Seat[]>([]);
 
-	/**
-	 * Group seats by row
-	 */
-	const seatsByRow = seats.reduce<Record<number, Seat[]>>((acc, seat) => {
-		const { row } = seat;
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --- its fine
-		acc[row] = acc[row] || [];
-		acc[row].push(seat);
-		return acc;
-	}, {});
+	const seatSelection = useSeatSelection(seats);
 
-	const seatRows = Object.keys(seatsByRow).map((rowKey) => Number(rowKey));
-
-	/**
-	 * Group seats by column based on indexFromLeft
-	 */
-	const seatsByColumn: Record<number, Record<number, Seat[]>> = Object.keys(
-		seatsByRow,
-	).reduce<Record<number, Record<number, Seat[]>>>((acc, rowKey) => {
-		const rowSeats = seatsByRow[Number(rowKey)];
-		acc[Number(rowKey)] = rowSeats.reduce<Record<number, Seat[]>>(
-			(rowAcc, seat) => {
-				const { column } = seat;
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --- its fine
-				rowAcc[column] = rowAcc[column] || [];
-				rowAcc[column].push(seat);
-				return rowAcc;
-			},
-			{},
-		);
-		return acc;
-	}, {});
+	const seatRows = Object.keys(seatSelection.seatsByRow).map((rowKey) =>
+		Number(rowKey),
+	);
 
 	return (
 		<div className="my-8 border rounded-md p-4">
 			{seatRows.map((rowKey) => (
 				<div key={rowKey} className="flex mb-4">
 					<SeatsColumns
-						seatsByColumn={seatsByColumn}
+						seatsByColumn={seatSelection.seatsByColumn}
 						rowKey={rowKey}
 						selectedSeat={selectedSeat}
 						setSelectedSeat={setSelectedSeat}
