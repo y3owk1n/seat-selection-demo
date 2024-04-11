@@ -6,6 +6,7 @@ import { useSeatSelection } from "@/hooks/use-seat-selection";
 import { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 interface SeatsProps {
 	seats: Seat[];
@@ -73,20 +74,23 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<div className="my-8 border flex flex-col gap-4 rounded-md p-4">
-				{seatRows.map((rowKey) => (
-					<div key={rowKey} className="flex">
-						<SeatsColumns
-							seatsByColumn={seatSelection.seatsByColumn}
-							rowKey={rowKey}
-							selectedSeat={seatSelection.selectedSeat}
-							onSelectSeat={seatSelection.onSelectSeat}
-							errorIds={selectionErrorIds}
-							successIds={selectionSuccessIds}
-						/>
-					</div>
-				))}
-			</div>
+			<ScrollArea className="my-8 border whitespace-nowrap rounded-md p-4">
+				<div className="flex flex-col gap-4">
+					{seatRows.map((rowKey) => (
+						<div key={rowKey} className="flex">
+							<SeatsColumns
+								seatsByColumn={seatSelection.seatsByColumn}
+								rowKey={rowKey}
+								selectedSeat={seatSelection.selectedSeat}
+								onSelectSeat={seatSelection.onSelectSeat}
+								errorIds={selectionErrorIds}
+								successIds={selectionSuccessIds}
+							/>
+						</div>
+					))}
+				</div>
+				<ScrollBar orientation="horizontal" />
+			</ScrollArea>
 			<div>
 				<Button
 					type="button"
@@ -113,13 +117,13 @@ function SeatsColumns(props: {
 	const columns = Object.keys(props.seatsByColumn[props.rowKey]);
 
 	return (
-		<>
+		<div className="flex gap-8">
 			{columns.map((columnKey) => (
-				<div key={columnKey} className="flex mr-8">
+				<div key={columnKey} className="flex">
 					<SeatsSeats columnKey={Number(columnKey)} {...props} />
 				</div>
 			))}
-		</>
+		</div>
 	);
 }
 
@@ -136,7 +140,7 @@ function SeatsSeats(props: {
 		props.seatsByColumn[Number(props.rowKey)][Number(props.columnKey)];
 
 	return (
-		<div className="flex gap-1">
+		<div className="flex gap-2">
 			{seats.map((seat) => (
 				<SeatsSeat key={seat.id} seat={seat} {...props} />
 			))}
