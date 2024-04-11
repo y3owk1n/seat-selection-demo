@@ -5,6 +5,7 @@ import { type PickSeatRes, type Seat } from "@/lib/seat";
 import { useSeatSelection } from "@/hooks/use-seat-selection";
 import { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface SeatsProps {
 	seats: Seat[];
@@ -12,8 +13,6 @@ interface SeatsProps {
 
 function Seats({ seats }: SeatsProps): JSX.Element {
 	const seatSelection = useSeatSelection(seats);
-
-	const [errors, setErrors] = useState<string[]>([]);
 
 	const [selectionErrorIds, setSelectionErrorIds] = useState<string[]>([]);
 
@@ -24,7 +23,6 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 	);
 
 	const submitSelectSeat = useCallback(async () => {
-		setErrors([]);
 		setSelectionErrorIds([]);
 		setIsSubmitting(true);
 		const selectedSeatsIds = seatSelection.selectedSeat.map(
@@ -43,28 +41,29 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 			const res = (await rawRes.json()) as PickSeatRes[];
 
 			if (!rawRes.ok) {
-				setErrors(["Something went wrong"]);
+				toast.error("Something went wrong. Please try again later.");
 				return;
 			}
 
 			if (res.some((r) => !r.success && r.message)) {
-				setErrors(
-					res
-						.filter((r) => !r.success && r.message)
-						.map((r) => r.message as string),
-				);
+				const filteredErrors = res
+					.filter((r) => !r.success)
+					.map((r) => r.message as string);
+
 				setSelectionErrorIds(
 					res.filter((r) => !r.success).map((r) => r.seatId),
 				);
+
+				filteredErrors.forEach((error) => toast.error(error));
 			}
 		} catch (error) {
-			setErrors([error.message as string]);
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
 		} finally {
 			setIsSubmitting(false);
 		}
 	}, [seatSelection.selectedSeat]);
-
-	console.log(selectionErrorIds);
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -80,9 +79,7 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 						/>
 					</div>
 				))}
-				{/* <pre>{JSON.stringify(seatSelection.selectedSeat, null, 2)}</pre> */}
 			</div>
-			<p>{JSON.stringify(errors, null, 2)}</p>
 			<div>
 				<Button
 					type="button"
