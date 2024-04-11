@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "./ui/button";
-import { type PickSeatRes, type Seat } from "@/lib/seat";
 import { useSeatSelection } from "@/hooks/use-seat-selection";
-import { useCallback, useState } from "react";
+import { type PickSeatRes, type Seat } from "@/lib/seat";
 import { cn } from "@/lib/utils";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "./ui/button";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 interface SeatsProps {

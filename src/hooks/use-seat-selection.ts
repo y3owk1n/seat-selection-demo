@@ -1,5 +1,5 @@
 import { type Seat, getSeatsByColumn, getSeatsByRow } from "@/lib/seat";
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 
 export function useSeatSelection(seats: Seat[]): {
 	seatsByRow: Record<number, Seat[]>;
