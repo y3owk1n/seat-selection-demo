@@ -33,6 +33,17 @@ export const initialSeatData: Seat[] = [
 	{ id: "B8", column: 2, row: 2, indexFromLeft: 3, status: "empty" },
 	{ id: "B9", column: 2, row: 2, indexFromLeft: 4, status: "empty" },
 	{ id: "B10", column: 2, row: 2, indexFromLeft: 5, status: "empty" },
+
+	{ id: "C1", column: 1, row: 3, indexFromLeft: 1, status: "empty" },
+	{ id: "C2", column: 1, row: 3, indexFromLeft: 2, status: "occupied" },
+	{ id: "C3", column: 1, row: 3, indexFromLeft: 3, status: "occupied" },
+	{ id: "C4", column: 2, row: 3, indexFromLeft: 1, status: "empty" },
+	{ id: "C5", column: 2, row: 3, indexFromLeft: 2, status: "empty" },
+	{ id: "C6", column: 2, row: 3, indexFromLeft: 3, status: "occupied" },
+	{ id: "C7", column: 2, row: 3, indexFromLeft: 4, status: "occupied" },
+	{ id: "C8", column: 3, row: 3, indexFromLeft: 1, status: "empty" },
+	{ id: "C9", column: 3, row: 3, indexFromLeft: 2, status: "empty" },
+	{ id: "C10", column: 3, row: 3, indexFromLeft: 3, status: "empty" },
 ];
 
 export function getSeatsByRow(seats: Seat[]): Record<number, Seat[]> {
