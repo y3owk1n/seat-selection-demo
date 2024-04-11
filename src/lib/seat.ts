@@ -1,4 +1,4 @@
-type SeatStatus = "empty" | "occupied" | "temp-occupied";
+type SeatStatus = "empty" | "occupied" | "temp-occupied" | null;
 
 export interface Seat {
 	id: string;
@@ -10,6 +10,30 @@ export interface Seat {
 	indexFromLeft: number;
 	status: SeatStatus;
 }
+
+export const initialSeatData: Seat[] = [
+	{ id: "A1", column: 1, row: 1, indexFromLeft: 1, status: "empty" },
+	{ id: "A2", column: 1, row: 1, indexFromLeft: 2, status: "empty" },
+	{ id: "A3", column: 1, row: 1, indexFromLeft: 3, status: "empty" },
+	{ id: "A4", column: 1, row: 1, indexFromLeft: 4, status: "empty" },
+	{ id: "A5", column: 1, row: 1, indexFromLeft: 5, status: "occupied" },
+	{ id: "A6", column: 2, row: 1, indexFromLeft: 1, status: "empty" },
+	{ id: "A7", column: 2, row: 1, indexFromLeft: 2, status: "empty" },
+	{ id: "A8", column: 2, row: 1, indexFromLeft: 3, status: "occupied" },
+	{ id: "A9", column: 2, row: 1, indexFromLeft: 4, status: "empty" },
+	{ id: "A10", column: 2, row: 1, indexFromLeft: 5, status: "empty" },
+
+	{ id: "B1", column: 1, row: 2, indexFromLeft: 1, status: "empty" },
+	{ id: "B2", column: 1, row: 2, indexFromLeft: 2, status: "occupied" },
+	{ id: "B3", column: 1, row: 2, indexFromLeft: 3, status: "occupied" },
+	{ id: "B4", column: 1, row: 2, indexFromLeft: 4, status: "empty" },
+	{ id: "B5", column: 1, row: 2, indexFromLeft: 5, status: "empty" },
+	{ id: "B6", column: 2, row: 2, indexFromLeft: 1, status: "empty" },
+	{ id: "B7", column: 2, row: 2, indexFromLeft: 2, status: "empty" },
+	{ id: "B8", column: 2, row: 2, indexFromLeft: 3, status: "empty" },
+	{ id: "B9", column: 2, row: 2, indexFromLeft: 4, status: "empty" },
+	{ id: "B10", column: 2, row: 2, indexFromLeft: 5, status: "empty" },
+];
 
 export function getSeatsByRow(seats: Seat[]): Record<number, Seat[]> {
 	const seatsByRow = seats.reduce<Record<number, Seat[]>>((acc, seat) => {
@@ -44,4 +68,177 @@ export function getSeatsByColumn(
 	}, {});
 
 	return seatsByColumn;
+}
+
+function isOccupied(seatStatus: Seat["status"]): boolean {
+	return seatStatus === "occupied" || seatStatus === "temp-occupied";
+}
+
+export interface PickSeatRes {
+	success: boolean;
+	seatId: string;
+	message?: string;
+}
+
+export function pickSeats(
+	seats: Seat[],
+	seatsToSelect: string[],
+): PickSeatRes[] {
+	const clonedSeats: Seat[] = JSON.parse(JSON.stringify(seats)) as Seat[];
+
+	const results: PickSeatRes[] = [];
+
+	// update the selected seats to temp occupied
+	const clonedSeatsWithTempOccupied = clonedSeats.map((seat) => ({
+		...seat,
+		status:
+			seatsToSelect.includes(seat.id) && seat.status === "empty"
+				? "temp-occupied"
+				: seat.status,
+	}));
+
+	for (const seatIdx of seatsToSelect) {
+		const seat = clonedSeatsWithTempOccupied.find(
+			(_seat) => _seat.id === seatIdx,
+		);
+
+		if (!seat) {
+			// Handle error if seat is not found
+			results.push({
+				seatId: seatIdx,
+				success: false,
+				message: `Error: Seat ${seatIdx} not found.`,
+			});
+			continue;
+		}
+
+		const currentSection = clonedSeatsWithTempOccupied.filter(
+			(_seat) => _seat.column === seat.column && _seat.row === seat.row,
+		);
+
+		const seatIndex = currentSection.findIndex(
+			(_seat) => _seat.id === seat.id,
+		);
+
+		const seatIndexInArray = seatIndex;
+
+		// Check if the seat index is within the bounds of the seats array
+		if (seatIndexInArray < 0 || seatIndexInArray >= currentSection.length) {
+			results.push({
+				seatId: seatIdx,
+				success: false,
+				message: `Error: Seat index ${seatIdx} is out of bounds.`,
+			});
+			continue;
+		}
+
+		// Check if the seat is already occupied
+		if (currentSection[seatIndexInArray].status !== "temp-occupied") {
+			results.push({
+				seatId: seatIdx,
+				success: false,
+				message: `Error: Seat ${seatIdx} is already occupied.`,
+			});
+			continue;
+		}
+
+		// Check if there is a single seat left and right
+		const leftLeftSeatIndex = seatIndexInArray - 2;
+		const leftSeatIndex = seatIndexInArray - 1;
+		const rightSeatIndex = seatIndexInArray + 1;
+		const rightRightSeatIndex = seatIndexInArray + 2;
+
+		const leftLeftSeatStatus: Seat["status"] =
+			leftLeftSeatIndex >= 0
+				? currentSection[leftLeftSeatIndex].status
+				: "occupied"; // Treat out-of-bounds seats as occupied
+		const rightRightSeatStatus: Seat["status"] =
+			rightRightSeatIndex < currentSection.length
+				? currentSection[rightRightSeatIndex].status
+				: "occupied"; // Treat out-of-bounds seats as occupied
+
+		// if (
+		// 	(isOccupied(leftLeftSeatStatus) && leftSeatIndex >= 0) ||
+		// 	(isOccupied(rightRightSeatStatus) &&
+		// 		rightSeatIndex < currentSection.length)
+		// ) {
+		// 	console.log("item 1");
+		// 	if (
+		// 		currentSection[leftSeatIndex].status === "empty" &&
+		// 		rightSeatIndex < currentSection.length &&
+		// 		currentSection[rightSeatIndex].status === "empty"
+		// 	) {
+		// 		results.push({
+		// 			success: false,
+		// 			message: `Error 1: Selecting seat ${seatIdx} would leave a single seat left or right.`,
+		// 		});
+		// 		continue;
+		// 	}
+		// }
+
+		if (
+			isOccupied(leftLeftSeatStatus) &&
+			isOccupied(rightRightSeatStatus) &&
+			leftSeatIndex >= 0 &&
+			rightSeatIndex < currentSection.length
+		) {
+			if (
+				(currentSection[leftSeatIndex].status === "empty" &&
+					rightSeatIndex < currentSection.length &&
+					isOccupied(currentSection[rightSeatIndex].status)) ||
+				(isOccupied(currentSection[leftSeatIndex].status) &&
+					rightSeatIndex < currentSection.length &&
+					currentSection[rightSeatIndex].status === "empty") ||
+				(currentSection[leftSeatIndex].status === "empty" &&
+					rightSeatIndex < currentSection.length &&
+					currentSection[rightSeatIndex].status === "empty")
+			) {
+				results.push({
+					seatId: seatIdx,
+					success: false,
+					message: `Error 2: Selecting seat ${seatIdx} would leave a single seat left or right.`,
+				});
+				continue;
+			}
+		}
+
+		if (isOccupied(leftLeftSeatStatus) && leftSeatIndex >= 0) {
+			if (
+				rightSeatIndex >= seatIndexInArray &&
+				// isOccupied(clonedSeatsWithTempOccupied[leftSeatIndex].status) &&
+				// leftSeatIndex < currentSection.length &&
+				currentSection[leftSeatIndex].status === "empty"
+			) {
+				results.push({
+					seatId: seatIdx,
+					success: false,
+					message: `Error 3: Selecting seat ${seatIdx} would leave a single seat left or right.`,
+				});
+				continue;
+			}
+		}
+
+		if (
+			isOccupied(rightRightSeatStatus) &&
+			rightSeatIndex < currentSection.length
+		) {
+			if (
+				// leftSeatIndex <= seatIndexInArray &&
+				// rightSeatIndex > seatIndexInArray &&
+				currentSection[rightSeatIndex].status === "empty"
+			) {
+				results.push({
+					seatId: seatIdx,
+					success: false,
+					message: `Error 4: Selecting seat ${seatIdx} would leave a single seat left or right.`,
+				});
+				continue;
+			}
+		}
+
+		// If no errors encountered, return success
+		results.push({ success: true, seatId: seatIdx });
+	}
+
+	return results;
 }
