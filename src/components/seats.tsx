@@ -1,6 +1,5 @@
 "use client";
 
-import { type Dispatch, type SetStateAction } from "react";
 import { Button } from "./ui/button";
 import { type Seat } from "@/lib/seat";
 import { useSeatSelection } from "@/hooks/use-seat-selection";
@@ -24,7 +23,7 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 						seatsByColumn={seatSelection.seatsByColumn}
 						rowKey={rowKey}
 						selectedSeat={seatSelection.selectedSeat}
-						setSelectedSeat={seatSelection.setSelectedSeat}
+						onSelectSeat={seatSelection.onSelectSeat}
 					/>
 				</div>
 			))}
@@ -34,10 +33,10 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 }
 
 function SeatsColumns(props: {
-	seatsByColumn: Record<number, Record<number, Seat[]>>;
+	seatsByColumn: ReturnType<typeof useSeatSelection>["seatsByColumn"];
 	rowKey: number;
-	selectedSeat: Seat[];
-	setSelectedSeat: Dispatch<SetStateAction<Seat[]>>;
+	selectedSeat: ReturnType<typeof useSeatSelection>["selectedSeat"];
+	onSelectSeat: ReturnType<typeof useSeatSelection>["onSelectSeat"];
 }): JSX.Element {
 	const columns = Object.keys(props.seatsByColumn[props.rowKey]);
 
@@ -53,11 +52,11 @@ function SeatsColumns(props: {
 }
 
 function SeatsSeats(props: {
-	seatsByColumn: Record<number, Record<number, Seat[]>>;
+	seatsByColumn: ReturnType<typeof useSeatSelection>["seatsByColumn"];
 	rowKey: number;
 	columnKey: number;
-	selectedSeat: Seat[];
-	setSelectedSeat: Dispatch<SetStateAction<Seat[]>>;
+	selectedSeat: ReturnType<typeof useSeatSelection>["selectedSeat"];
+	onSelectSeat: ReturnType<typeof useSeatSelection>["onSelectSeat"];
 }): JSX.Element {
 	const seats =
 		props.seatsByColumn[Number(props.rowKey)][Number(props.columnKey)];
@@ -75,28 +74,18 @@ function SeatsSeat(props: {
 	seat: Seat;
 	rowKey: number;
 	columnKey: number;
-	selectedSeat: Seat[];
-	setSelectedSeat: Dispatch<SetStateAction<Seat[]>>;
+	selectedSeat: ReturnType<typeof useSeatSelection>["selectedSeat"];
+	onSelectSeat: ReturnType<typeof useSeatSelection>["onSelectSeat"];
 }): JSX.Element {
 	const selected = props.selectedSeat.some(
 		(_seat) => _seat.id === props.seat.id,
 	);
 
-	function onSelectSeat(): void {
-		props.setSelectedSeat((prevSelectedSeat) => {
-			if (prevSelectedSeat.some((_seat) => _seat.id === props.seat.id)) {
-				return prevSelectedSeat.filter(
-					(_seat) => _seat.id !== props.seat.id,
-				);
-			}
-
-			return [...prevSelectedSeat, props.seat];
-		});
-	}
-
 	return (
 		<Button
-			onClick={onSelectSeat}
+			onClick={() => {
+				props.onSelectSeat(props.seat.id);
+			}}
 			disabled={props.seat.status === "occupied"}
 			variant={selected ? "default" : "outline"}
 			className="size-10 rounded-full"

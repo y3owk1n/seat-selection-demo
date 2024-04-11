@@ -1,11 +1,11 @@
 import { type Seat, getSeatsByColumn, getSeatsByRow } from "@/lib/seat";
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { useState, useCallback } from "react";
 
 export function useSeatSelection(seats: Seat[]): {
 	seatsByRow: Record<number, Seat[]>;
 	seatsByColumn: Record<number, Record<number, Seat[]>>;
 	selectedSeat: Seat[];
-	setSelectedSeat: Dispatch<SetStateAction<Seat[]>>;
+	onSelectSeat: (seatId: string) => void;
 } {
 	const [selectedSeat, setSelectedSeat] = useState<Seat[]>([]);
 
@@ -13,5 +13,23 @@ export function useSeatSelection(seats: Seat[]): {
 
 	const seatsByColumn = getSeatsByColumn(seatsByRow);
 
-	return { seatsByRow, seatsByColumn, selectedSeat, setSelectedSeat };
+	const onSelectSeat = useCallback(
+		(seatId: string) => {
+			const seat = seats.find((_seat) => _seat.id === seatId);
+			if (!seat) return;
+
+			setSelectedSeat((prevSelectedSeat) => {
+				if (prevSelectedSeat.some((_seat) => _seat.id === seatId)) {
+					return prevSelectedSeat.filter(
+						(_seat) => _seat.id !== seatId,
+					);
+				}
+
+				return [...prevSelectedSeat, seat];
+			});
+		},
+		[seats],
+	);
+
+	return { seatsByRow, seatsByColumn, selectedSeat, onSelectSeat };
 }
