@@ -65,7 +65,11 @@ export function useSeatSelection(seats: Seat[]): {
 
 				filteredErrors
 					.map((r) => r.message as string)
-					.forEach((error) => toast.error(error));
+					.forEach((error) =>
+						toast.error("Error From Client", {
+							description: error,
+						}),
+					);
 			}
 			setSelectionSuccessIds(filteredSuccess.map((r) => r.seatId));
 		}
