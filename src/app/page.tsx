@@ -2,14 +2,14 @@
 
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import { Seats } from "@/components/seats";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { initialSeatData } from "@/lib/seat-data";
-import { useState } from "react";
-import { tickets } from "@/lib/ticket-data";
 import TicketCard from "@/components/ticket-card";
-import Image from "next/image";
-import concertImage from "../../public/assets/concert-image-demo.jpg";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useSeatSelection } from "@/hooks/use-seat-selection";
+import { initialSeatData } from "@/lib/seat-data";
+import { tickets } from "@/lib/ticket-data";
+import Image from "next/image";
+import { useState } from "react";
+import concertImage from "../../public/assets/concert-image-demo.jpg";
 
 export default function Home(): JSX.Element {
 	const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
