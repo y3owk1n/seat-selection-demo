@@ -1,6 +1,6 @@
 "use client";
 
-import { useSeatSelection } from "@/hooks/use-seat-selection";
+import { type UseSeatSelection } from "@/hooks/use-seat-selection";
 import { formatCurrency } from "@/lib/formatter";
 import { type PickSeatRes, type Seat } from "@/lib/seat";
 import { cn } from "@/lib/utils";
@@ -10,12 +10,10 @@ import { Button } from "./ui/button";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 interface SeatsProps {
-	seats: Seat[];
+	seatSelection: UseSeatSelection;
 }
 
-function Seats({ seats }: SeatsProps): JSX.Element {
-	const seatSelection = useSeatSelection(seats);
-
+function Seats({ seatSelection }: SeatsProps): JSX.Element {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const seatRows = Object.keys(seatSelection.seatsByRow).map((rowKey) =>
@@ -118,10 +116,10 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 }
 
 function SeatsColumns(props: {
-	seatsByColumn: ReturnType<typeof useSeatSelection>["seatsByColumn"];
+	seatsByColumn: UseSeatSelection["seatsByColumn"];
 	rowKey: number;
-	selectedSeat: ReturnType<typeof useSeatSelection>["selectedSeat"];
-	onSelectSeat: ReturnType<typeof useSeatSelection>["onSelectSeat"];
+	selectedSeat: UseSeatSelection["selectedSeat"];
+	onSelectSeat: UseSeatSelection["onSelectSeat"];
 	errorIds: string[];
 	successIds: string[];
 }): JSX.Element {
@@ -139,11 +137,11 @@ function SeatsColumns(props: {
 }
 
 function SeatsSeats(props: {
-	seatsByColumn: ReturnType<typeof useSeatSelection>["seatsByColumn"];
+	seatsByColumn: UseSeatSelection["seatsByColumn"];
 	rowKey: number;
 	columnKey: number;
-	selectedSeat: ReturnType<typeof useSeatSelection>["selectedSeat"];
-	onSelectSeat: ReturnType<typeof useSeatSelection>["onSelectSeat"];
+	selectedSeat: UseSeatSelection["selectedSeat"];
+	onSelectSeat: UseSeatSelection["onSelectSeat"];
 	errorIds: string[];
 	successIds: string[];
 }): JSX.Element {
@@ -163,8 +161,8 @@ function SeatsSeat(props: {
 	seat: Seat;
 	rowKey: number;
 	columnKey: number;
-	selectedSeat: ReturnType<typeof useSeatSelection>["selectedSeat"];
-	onSelectSeat: ReturnType<typeof useSeatSelection>["onSelectSeat"];
+	selectedSeat: UseSeatSelection["selectedSeat"];
+	onSelectSeat: UseSeatSelection["onSelectSeat"];
 	errorIds: string[];
 	successIds: string[];
 }): JSX.Element {
