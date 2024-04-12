@@ -8,6 +8,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 1,
 		status: "empty",
+		category: "VIP",
 		price: 100,
 	},
 	{
@@ -17,6 +18,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 2,
 		status: "empty",
+		category: "VIP",
 		price: 100,
 	},
 	{
@@ -26,6 +28,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 3,
 		status: "empty",
+		category: "VIP",
 		price: 100,
 	},
 	{
@@ -35,6 +38,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 4,
 		status: "empty",
+		category: "VIP",
 		price: 100,
 	},
 	{
@@ -44,6 +48,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 5,
 		status: "occupied",
+		category: "VIP",
 		price: 100,
 	},
 	{
@@ -53,6 +58,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 1,
 		status: "empty",
+		category: "VIP",
 		price: 100,
 	},
 	{
@@ -62,6 +68,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 2,
 		status: "empty",
+		category: "VIP",
 		price: 100,
 	},
 	{
@@ -71,6 +78,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 3,
 		status: "occupied",
+		category: "VIP",
 		price: 100,
 	},
 	{
@@ -80,6 +88,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 4,
 		status: "empty",
+		category: "VIP",
 		price: 100,
 	},
 	{
@@ -89,6 +98,7 @@ export const initialSeatData: Seat[] = [
 		row: 1,
 		indexFromLeft: 5,
 		status: "empty",
+		category: "VIP",
 		price: 100,
 	},
 
@@ -99,6 +109,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 1,
 		status: "empty",
+		category: "Standard",
 		price: 80,
 	},
 	{
@@ -108,6 +119,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 2,
 		status: "occupied",
+		category: "Standard",
 		price: 80,
 	},
 	{
@@ -117,6 +129,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 3,
 		status: "occupied",
+		category: "Standard",
 		price: 80,
 	},
 	{
@@ -126,6 +139,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 4,
 		status: "empty",
+		category: "Standard",
 		price: 80,
 	},
 	{
@@ -135,6 +149,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 5,
 		status: "empty",
+		category: "Standard",
 		price: 80,
 	},
 	{
@@ -144,6 +159,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 1,
 		status: "empty",
+		category: "Standard",
 		price: 80,
 	},
 	{
@@ -153,6 +169,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 2,
 		status: "empty",
+		category: "Standard",
 		price: 80,
 	},
 	{
@@ -162,6 +179,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 3,
 		status: "empty",
+		category: "Standard",
 		price: 80,
 	},
 	{
@@ -171,6 +189,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 4,
 		status: "empty",
+		category: "Standard",
 		price: 80,
 	},
 	{
@@ -180,6 +199,7 @@ export const initialSeatData: Seat[] = [
 		row: 2,
 		indexFromLeft: 5,
 		status: "empty",
+		category: "Standard",
 		price: 80,
 	},
 
@@ -190,6 +210,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 1,
 		status: "empty",
+		category: "Cheap",
 		price: 50,
 	},
 	{
@@ -199,6 +220,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 2,
 		status: "occupied",
+		category: "Cheap",
 		price: 50,
 	},
 	{
@@ -208,6 +230,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 3,
 		status: "occupied",
+		category: "Cheap",
 		price: 50,
 	},
 	{
@@ -217,6 +240,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 1,
 		status: "empty",
+		category: "Cheap",
 		price: 50,
 	},
 	{
@@ -226,6 +250,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 2,
 		status: "empty",
+		category: "Cheap",
 		price: 50,
 	},
 	{
@@ -235,6 +260,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 3,
 		status: "occupied",
+		category: "Cheap",
 		price: 50,
 	},
 	{
@@ -244,6 +270,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 4,
 		status: "occupied",
+		category: "Cheap",
 		price: 50,
 	},
 	{
@@ -253,6 +280,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 1,
 		status: "empty",
+		category: "Cheap",
 		price: 50,
 	},
 	{
@@ -262,6 +290,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 2,
 		status: "empty",
+		category: "Cheap",
 		price: 50,
 	},
 	{
@@ -271,6 +300,7 @@ export const initialSeatData: Seat[] = [
 		row: 3,
 		indexFromLeft: 3,
 		status: "empty",
+		category: "Cheap",
 		price: 50,
 	},
 ];
