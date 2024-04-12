@@ -174,7 +174,7 @@ function SeatsSeat(props: {
 			disabled={props.seat.status === "occupied"}
 			variant={selected ? "default" : "outline"}
 			className={cn(
-				"size-10 rounded-full",
+				"size-14 rounded-full flex flex-col",
 				props.errorIds.includes(props.seat.id)
 					? "ring ring-red-500"
 					: "",
@@ -183,7 +183,14 @@ function SeatsSeat(props: {
 					: "",
 			)}
 		>
-			{props.seat.id}
+			<span className="font-bold">{props.seat.id}</span>
+			<span className="text-[8px] text-muted-foreground">
+				{new Intl.NumberFormat("en-US", {
+					style: "currency",
+					currency: "MYR",
+					maximumFractionDigits: 0,
+				}).format(props.seat.price)}
+			</span>
 		</Button>
 	);
 }
