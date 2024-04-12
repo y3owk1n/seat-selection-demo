@@ -23,8 +23,11 @@ export function useSeatSelection(seats: Seat[]): {
 	setSelectionErrorIds: Dispatch<SetStateAction<string[]>>;
 	selectionSuccessIds: string[];
 	setSelectionSuccessIds: Dispatch<SetStateAction<string[]>>;
+	totalAmountForSeats: number;
 } {
 	const [selectedSeat, setSelectedSeat] = useState<Seat[]>([]);
+
+	const [totalAmountForSeats, setTotalAmountForSeats] = useState(0);
 
 	const [selectionErrorIds, setSelectionErrorIds] = useState<string[]>([]);
 
@@ -77,6 +80,16 @@ export function useSeatSelection(seats: Seat[]): {
 		}
 	}, [seats, selectedSeat]);
 
+	useEffect(() => {
+		setTotalAmountForSeats(0);
+		if (selectedSeat.length > 0) {
+			const totalAmount = selectedSeat.reduce((acc, seat) => {
+				return acc + seat.price;
+			}, 0);
+			setTotalAmountForSeats(totalAmount);
+		}
+	}, [selectedSeat]);
+
 	return {
 		seatsByRow,
 		seatsByColumn,
@@ -86,5 +99,6 @@ export function useSeatSelection(seats: Seat[]): {
 		setSelectionErrorIds,
 		selectionSuccessIds,
 		setSelectionSuccessIds,
+		totalAmountForSeats,
 	};
 }

@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import { formatCurrency } from "@/lib/formatter";
 
 interface SeatsProps {
 	seats: Seat[];
@@ -104,7 +105,11 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 					}
 					onClick={submitSelectSeat}
 				>
-					{isSubmitting ? "..." : "Submit"}
+					{isSubmitting
+						? "..."
+						: `Buy Now - ${formatCurrency(
+								seatSelection.totalAmountForSeats,
+							)}`}
 				</Button>
 			</div>
 		</div>
@@ -185,11 +190,7 @@ function SeatsSeat(props: {
 		>
 			<span className="font-bold">{props.seat.id}</span>
 			<span className="text-[8px] text-muted-foreground">
-				{new Intl.NumberFormat("en-US", {
-					style: "currency",
-					currency: "MYR",
-					maximumFractionDigits: 0,
-				}).format(props.seat.price)}
+				{formatCurrency(props.seat.price)}
 			</span>
 		</Button>
 	);
