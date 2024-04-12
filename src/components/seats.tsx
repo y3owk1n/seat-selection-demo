@@ -15,12 +15,6 @@ interface SeatsProps {
 function Seats({ seats }: SeatsProps): JSX.Element {
 	const seatSelection = useSeatSelection(seats);
 
-	const [selectionErrorIds, setSelectionErrorIds] = useState<string[]>([]);
-
-	const [selectionSuccessIds, setSelectionSuccessIds] = useState<string[]>(
-		[],
-	);
-
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const seatRows = Object.keys(seatSelection.seatsByRow).map((rowKey) =>
@@ -28,8 +22,8 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 	);
 
 	const submitSelectSeat = useCallback(async () => {
-		setSelectionErrorIds([]);
-		setSelectionSuccessIds([]);
+		seatSelection.setSelectionErrorIds([]);
+		seatSelection.setSelectionSuccessIds([]);
 		setIsSubmitting(true);
 		const selectedSeatsIds = seatSelection.selectedSeat.map(
 			(seat) => seat.id,
@@ -56,13 +50,17 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 			const filteredSuccess = res.filter((r) => r.success);
 
 			if (filteredErrors.length) {
-				setSelectionErrorIds(filteredErrors.map((r) => r.seatId));
+				seatSelection.setSelectionErrorIds(
+					filteredErrors.map((r) => r.seatId),
+				);
 
 				filteredErrors
 					.map((r) => r.message as string)
 					.forEach((error) => toast.error(error));
 			}
-			setSelectionSuccessIds(filteredSuccess.map((r) => r.seatId));
+			seatSelection.setSelectionSuccessIds(
+				filteredSuccess.map((r) => r.seatId),
+			);
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
@@ -70,7 +68,7 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 		} finally {
 			setIsSubmitting(false);
 		}
-	}, [seatSelection.selectedSeat]);
+	}, [seatSelection]);
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -86,8 +84,8 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 								rowKey={rowKey}
 								selectedSeat={seatSelection.selectedSeat}
 								onSelectSeat={seatSelection.onSelectSeat}
-								errorIds={selectionErrorIds}
-								successIds={selectionSuccessIds}
+								errorIds={seatSelection.selectionErrorIds}
+								successIds={seatSelection.selectionSuccessIds}
 							/>
 						</div>
 					))}
