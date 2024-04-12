@@ -56,7 +56,11 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 
 				filteredErrors
 					.map((r) => r.message as string)
-					.forEach((error) => toast.error(error));
+					.forEach((error) =>
+						toast.error("Error From Server", {
+							description: error,
+						}),
+					);
 			}
 			seatSelection.setSelectionSuccessIds(
 				filteredSuccess.map((r) => r.seatId),
@@ -92,7 +96,7 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 				</div>
 				<ScrollBar orientation="horizontal" />
 			</ScrollArea>
-			<div>
+			<div className="flex justify-center">
 				<Button
 					type="button"
 					disabled={
