@@ -36,7 +36,7 @@ export default function TicketCard(props: TicketCardProps): JSX.Element {
 
 	const selectedSuccessCount = selectedSuccessDetails.length;
 
-	function onSelectTicket() {
+	function onSelectTicket(): void {
 		if (props.selectedTicket === props.ticket.id) {
 			props.setSelectedTicket(null);
 		} else {
