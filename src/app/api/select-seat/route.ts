@@ -1,4 +1,5 @@
-import { initialSeatData, pickSeats } from "@/lib/seat";
+import { pickSeats } from "@/lib/seat";
+import { initialSeatData } from "@/lib/seat-data";
 
 interface SeatRequestBody {
 	selectedSeatsIds: string[];

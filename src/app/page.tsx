@@ -1,6 +1,6 @@
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import { Seats } from "@/components/seats";
-import { initialSeatData } from "@/lib/seat";
+import { initialSeatData } from "@/lib/seat-data";
 
 export default function Home(): JSX.Element {
 	return (
