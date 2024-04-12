@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
 import { type Dispatch, type SetStateAction } from "react";
 import { Separator } from "./ui/separator";
+import { useRouter } from "next/navigation";
 
 interface TicketCardProps {
 	seats: Seat[];
@@ -16,6 +17,8 @@ interface TicketCardProps {
 }
 
 export default function TicketCard(props: TicketCardProps): JSX.Element {
+	const router = useRouter();
+
 	const isSelected = props.selectedTicket === props.ticket.id;
 
 	const selectedErrorDetails = props.seats.filter((seat) => {
@@ -41,6 +44,7 @@ export default function TicketCard(props: TicketCardProps): JSX.Element {
 			props.setSelectedTicket(null);
 		} else {
 			props.setSelectedTicket(props.ticket.id);
+			router.push("#seat-selection");
 		}
 	}
 
