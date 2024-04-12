@@ -3,9 +3,9 @@ import { type Seat } from "@/lib/seat";
 import { type Ticket } from "@/lib/ticket";
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { type Dispatch, type SetStateAction } from "react";
 import { Separator } from "./ui/separator";
-import { useRouter } from "next/navigation";
 
 interface TicketCardProps {
 	seats: Seat[];
