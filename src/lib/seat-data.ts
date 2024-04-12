@@ -2,7 +2,7 @@ import { type Seat } from "./seat";
 
 export const initialSeatData: Seat[] = [
 	{
-		id: "A1",
+		id: "315b5d08-996a-431f-b718-bed947643781",
 		label: "A1",
 		column: 1,
 		row: 1,
@@ -11,7 +11,7 @@ export const initialSeatData: Seat[] = [
 		price: 100,
 	},
 	{
-		id: "A2",
+		id: "5aeeab6c-4e27-4c4c-acf1-96b88fce3a83",
 		label: "A2",
 		column: 1,
 		row: 1,
@@ -20,7 +20,7 @@ export const initialSeatData: Seat[] = [
 		price: 100,
 	},
 	{
-		id: "A3",
+		id: "8699d5ad-2594-4be9-8c08-3ecab5fb7c59",
 		label: "A3",
 		column: 1,
 		row: 1,
@@ -29,7 +29,7 @@ export const initialSeatData: Seat[] = [
 		price: 100,
 	},
 	{
-		id: "A4",
+		id: "47efeae3-764c-4831-913e-2ab1193b894f",
 		label: "A4",
 		column: 1,
 		row: 1,
@@ -38,7 +38,7 @@ export const initialSeatData: Seat[] = [
 		price: 100,
 	},
 	{
-		id: "A5",
+		id: "f337873e-c9f0-4a01-8ac9-a1023936c554",
 		label: "A5",
 		column: 1,
 		row: 1,
@@ -47,7 +47,7 @@ export const initialSeatData: Seat[] = [
 		price: 100,
 	},
 	{
-		id: "A6",
+		id: "562ec4ec-4c4b-469d-90f6-6afa4074600a",
 		label: "A6",
 		column: 2,
 		row: 1,
@@ -56,7 +56,7 @@ export const initialSeatData: Seat[] = [
 		price: 100,
 	},
 	{
-		id: "A7",
+		id: "476e992c-d944-4571-9bb6-39c4fc639bcc",
 		label: "A7",
 		column: 2,
 		row: 1,
@@ -65,7 +65,7 @@ export const initialSeatData: Seat[] = [
 		price: 100,
 	},
 	{
-		id: "A8",
+		id: "38d1ff7f-0d26-48aa-b974-ce513fefd4ac",
 		label: "A8",
 		column: 2,
 		row: 1,
@@ -74,7 +74,7 @@ export const initialSeatData: Seat[] = [
 		price: 100,
 	},
 	{
-		id: "A9",
+		id: "eb718b72-a281-42d5-8cf8-270e115e20ad",
 		label: "A9",
 		column: 2,
 		row: 1,
@@ -83,7 +83,7 @@ export const initialSeatData: Seat[] = [
 		price: 100,
 	},
 	{
-		id: "A10",
+		id: "29df8044-c2aa-4ea2-9bfb-bdf84f9848ad",
 		label: "A10",
 		column: 2,
 		row: 1,
@@ -93,7 +93,7 @@ export const initialSeatData: Seat[] = [
 	},
 
 	{
-		id: "B1",
+		id: "9d5df3f0-adfc-4b31-813b-8ae68e940615",
 		label: "B1",
 		column: 1,
 		row: 2,
@@ -102,7 +102,7 @@ export const initialSeatData: Seat[] = [
 		price: 80,
 	},
 	{
-		id: "B2",
+		id: "dd79d519-298f-4e32-8dda-bd2879c464e7",
 		label: "B2",
 		column: 1,
 		row: 2,
@@ -111,7 +111,7 @@ export const initialSeatData: Seat[] = [
 		price: 80,
 	},
 	{
-		id: "B3",
+		id: "f499bbe2-0cb8-48a1-8243-0b3e7b3404c3",
 		label: "B3",
 		column: 1,
 		row: 2,
@@ -120,7 +120,7 @@ export const initialSeatData: Seat[] = [
 		price: 80,
 	},
 	{
-		id: "B4",
+		id: "ffa08f97-b34b-4157-bbc9-00b753857661",
 		label: "B4",
 		column: 1,
 		row: 2,
@@ -129,7 +129,7 @@ export const initialSeatData: Seat[] = [
 		price: 80,
 	},
 	{
-		id: "B5",
+		id: "009b8b8d-9ca8-41fe-90cc-3427f4055413",
 		label: "B5",
 		column: 1,
 		row: 2,
@@ -138,7 +138,7 @@ export const initialSeatData: Seat[] = [
 		price: 80,
 	},
 	{
-		id: "B6",
+		id: "ceae6084-56e8-4fb0-9ef4-170df7f5f7b7",
 		label: "B6",
 		column: 2,
 		row: 2,
@@ -147,7 +147,7 @@ export const initialSeatData: Seat[] = [
 		price: 80,
 	},
 	{
-		id: "B7",
+		id: "52648e96-3cd8-4cc8-b378-307e785b2fac",
 		label: "B7",
 		column: 2,
 		row: 2,
@@ -156,7 +156,7 @@ export const initialSeatData: Seat[] = [
 		price: 80,
 	},
 	{
-		id: "B8",
+		id: "da946ca2-13c2-443c-800e-5e8f6b24fd43",
 		label: "B8",
 		column: 2,
 		row: 2,
@@ -165,7 +165,7 @@ export const initialSeatData: Seat[] = [
 		price: 80,
 	},
 	{
-		id: "B9",
+		id: "126ab7a5-f585-4e40-a49e-071e4ba78d96",
 		label: "B9",
 		column: 2,
 		row: 2,
@@ -174,7 +174,7 @@ export const initialSeatData: Seat[] = [
 		price: 80,
 	},
 	{
-		id: "B10",
+		id: "f77a01a6-308f-445c-8497-afb9dfe96225",
 		label: "B10",
 		column: 2,
 		row: 2,
@@ -184,7 +184,7 @@ export const initialSeatData: Seat[] = [
 	},
 
 	{
-		id: "C1",
+		id: "1d72eb37-56ad-46a1-9715-0d7c9028dfab",
 		label: "C1",
 		column: 1,
 		row: 3,
@@ -193,7 +193,7 @@ export const initialSeatData: Seat[] = [
 		price: 50,
 	},
 	{
-		id: "C2",
+		id: "0ffe77f0-86f2-4f65-9ba4-091300f15429",
 		label: "C2",
 		column: 1,
 		row: 3,
@@ -202,7 +202,7 @@ export const initialSeatData: Seat[] = [
 		price: 50,
 	},
 	{
-		id: "C3",
+		id: "749da285-cc30-47d2-83d4-206663557d8b",
 		label: "C3",
 		column: 1,
 		row: 3,
@@ -211,7 +211,7 @@ export const initialSeatData: Seat[] = [
 		price: 50,
 	},
 	{
-		id: "C4",
+		id: "70653642-0a57-433e-b748-2b82fc78573d",
 		label: "C4",
 		column: 2,
 		row: 3,
@@ -220,7 +220,7 @@ export const initialSeatData: Seat[] = [
 		price: 50,
 	},
 	{
-		id: "C5",
+		id: "bab7b998-87a1-40a9-acdc-2d13dfb7ef22",
 		label: "C5",
 		column: 2,
 		row: 3,
@@ -229,7 +229,7 @@ export const initialSeatData: Seat[] = [
 		price: 50,
 	},
 	{
-		id: "C6",
+		id: "817d2dfa-a21b-48d8-9aa5-77ad8ad5103d",
 		label: "C6",
 		column: 2,
 		row: 3,
@@ -238,7 +238,7 @@ export const initialSeatData: Seat[] = [
 		price: 50,
 	},
 	{
-		id: "C7",
+		id: "a6eea784-4b68-47a8-8a1d-f8bb952b729c",
 		label: "C7",
 		column: 2,
 		row: 3,
@@ -247,7 +247,7 @@ export const initialSeatData: Seat[] = [
 		price: 50,
 	},
 	{
-		id: "C8",
+		id: "c2b7ab3d-efd7-4d54-a4bd-2e52bf3ef371",
 		label: "C8",
 		column: 3,
 		row: 3,
@@ -256,7 +256,7 @@ export const initialSeatData: Seat[] = [
 		price: 50,
 	},
 	{
-		id: "C9",
+		id: "9900ccdc-ec86-4307-b7e8-8c7e9dbeb64a",
 		label: "C9",
 		column: 3,
 		row: 3,
@@ -265,7 +265,7 @@ export const initialSeatData: Seat[] = [
 		price: 50,
 	},
 	{
-		id: "C10",
+		id: "42007f40-9087-4ace-9068-376cfb80b419",
 		label: "C10",
 		column: 3,
 		row: 3,
