@@ -253,3 +253,18 @@ export function pickSeats(
 
 	return results;
 }
+
+export function toggleSeat(
+	prevSelectedSeats: Seat[],
+	currentSelectedSeat: Seat,
+): Seat[] {
+	if (
+		prevSelectedSeats.some((_seat) => _seat.id === currentSelectedSeat.id)
+	) {
+		return prevSelectedSeats.filter(
+			(_seat) => _seat.id !== currentSelectedSeat.id,
+		);
+	}
+
+	return [...prevSelectedSeats, currentSelectedSeat];
+}

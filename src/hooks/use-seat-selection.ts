@@ -1,4 +1,10 @@
-import { type Seat, getSeatsByColumn, getSeatsByRow } from "@/lib/seat";
+import {
+	type Seat,
+	getSeatsByColumn,
+	getSeatsByRow,
+	pickSeats,
+	toggleSeat,
+} from "@/lib/seat";
 import { useCallback, useState } from "react";
 
 export function useSeatSelection(seats: Seat[]): {
@@ -18,15 +24,11 @@ export function useSeatSelection(seats: Seat[]): {
 			const seat = seats.find((_seat) => _seat.id === seatId);
 			if (!seat) return;
 
-			setSelectedSeat((prevSelectedSeat) => {
-				if (prevSelectedSeat.some((_seat) => _seat.id === seatId)) {
-					return prevSelectedSeat.filter(
-						(_seat) => _seat.id !== seatId,
-					);
-				}
+			setSelectedSeat((prevSelectedSeat) =>
+				toggleSeat(prevSelectedSeat, seat),
+			);
 
-				return [...prevSelectedSeat, seat];
-			});
+			// const res = pickSeats(seats, body.selectedSeatsIds);
 		},
 		[seats],
 	);
