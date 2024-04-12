@@ -14,7 +14,7 @@ import {
 } from "react";
 import { toast } from "sonner";
 
-export function useSeatSelection(seats: Seat[]): {
+interface UseSeatSelectionRet {
 	seatsByRow: Record<number, Seat[]>;
 	seatsByColumn: Record<number, Record<number, Seat[]>>;
 	selectedSeat: Seat[];
@@ -24,7 +24,9 @@ export function useSeatSelection(seats: Seat[]): {
 	selectionSuccessIds: string[];
 	setSelectionSuccessIds: Dispatch<SetStateAction<string[]>>;
 	totalAmountForSeats: number;
-} {
+}
+
+export function useSeatSelection(seats: Seat[]): UseSeatSelectionRet {
 	const [selectedSeat, setSelectedSeat] = useState<Seat[]>([]);
 
 	const [totalAmountForSeats, setTotalAmountForSeats] = useState(0);
