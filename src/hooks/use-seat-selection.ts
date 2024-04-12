@@ -38,6 +38,8 @@ export function useSeatSelection(seats: Seat[]): {
 
 	const onSelectSeat = useCallback(
 		(seatId: string) => {
+			setSelectionSuccessIds([]);
+			setSelectionErrorIds([]);
 			toast.dismiss();
 			const seat = seats.find((_seat) => _seat.id === seatId);
 			if (!seat) return;
