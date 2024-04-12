@@ -78,7 +78,7 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<ScrollArea className="my-8 border whitespace-nowrap rounded-md p-4">
+			<ScrollArea className="border whitespace-nowrap rounded-md p-4">
 				<div className="flex flex-col items-center gap-4">
 					<div className="bg-muted rounded w-52 h-10 grid items-center text-center">
 						Stage
