@@ -23,6 +23,7 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 	);
 
 	const submitSelectSeat = useCallback(async () => {
+		toast.dismiss();
 		seatSelection.setSelectionErrorIds([]);
 		seatSelection.setSelectionSuccessIds([]);
 		setIsSubmitting(true);
