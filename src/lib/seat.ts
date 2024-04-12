@@ -350,7 +350,7 @@ export function pickSeats(
 			results.push({
 				seatId: seatIdx,
 				success: false,
-				message: `Error: Seat ${seatIdx} not found.`,
+				message: `Seat ${seatIdx} not found.`,
 			});
 			continue;
 		}
@@ -376,7 +376,7 @@ export function pickSeats(
 			results.push({
 				seatId: seatIdx,
 				success: false,
-				message: `Error: Seat index ${seatIdx} is out of bounds.`,
+				message: `Seat index ${seat.label} is out of bounds.`,
 			});
 			continue;
 		}
@@ -388,7 +388,7 @@ export function pickSeats(
 			results.push({
 				seatId: seatIdx,
 				success: false,
-				message: `Error: Seat ${seatIdx} is already occupied.`,
+				message: `Seat ${seat.label} is already occupied.`,
 			});
 			continue;
 		}
@@ -446,7 +446,7 @@ export function pickSeats(
 				results.push({
 					seatId: seatIdx,
 					success: false,
-					message: `Selecting seat ${seatIdx} would leave a single seat left or right.`,
+					message: `Selecting seat ${seat.label} would leave a single seat left or right.`,
 				});
 				continue;
 			}
@@ -469,7 +469,7 @@ export function pickSeats(
 				results.push({
 					seatId: seatIdx,
 					success: false,
-					message: `Selecting seat ${seatIdx} would leave a single seat left or right.`,
+					message: `Selecting seat ${seat.label} would leave a single seat left or right.`,
 				});
 				continue;
 			}
@@ -492,7 +492,7 @@ export function pickSeats(
 				results.push({
 					seatId: seatIdx,
 					success: false,
-					message: `Selecting seat ${seatIdx} would leave a single seat left or right.`,
+					message: `Selecting seat ${seat.label} would leave a single seat left or right.`,
 				});
 				continue;
 			}
