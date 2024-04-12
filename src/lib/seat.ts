@@ -292,40 +292,170 @@ export function getSeatsByColumn(
 	return seatsByColumn;
 }
 
-function isOccupied(seatStatus: Seat["status"]): boolean {
-	return seatStatus === "occupied" || seatStatus === "temp-occupied";
-}
-
 export interface PickSeatRes {
 	success: boolean;
 	seatId: string;
 	message?: string;
 }
 
-export function pickSeats(
+function clonedArray<T extends object[]>(item: T): T {
+	return item.map((i) => ({ ...i })) as T;
+}
+
+function updateSeatsWithTempOccupied(
 	seats: Seat[],
 	seatsToSelect: string[],
-): PickSeatRes[] {
-	const clonedSeats: Seat[] = JSON.parse(JSON.stringify(seats)) as Seat[];
-
-	const results: PickSeatRes[] = [];
-
-	// update the selected seats to temp occupied
-	const clonedSeatsWithTempOccupied = clonedSeats.map((seat) => ({
+): Seat[] {
+	return seats.map((seat) => ({
 		...seat,
 		status:
 			seatsToSelect.includes(seat.id) && seat.status === "empty"
 				? "temp-occupied"
 				: seat.status,
 	}));
+}
+
+function getCurrentSeat(seat: Seat[], seatId: string): Seat | undefined {
+	return seat.find((_seat) => _seat.id === seatId);
+}
+
+function getCurrentSection(seat: Seat[], column: number, row: number): Seat[] {
+	return seat.filter((_seat) => _seat.column === column && _seat.row === row);
+}
+
+function getSeatIndex(seat: Seat[], seatId: string): number {
+	return seat.findIndex((_seat) => _seat.id === seatId);
+}
+
+function isSeatOutOfBounds(section: Seat[], seatIndex: number): boolean {
+	return seatIndex < 0 || seatIndex >= section.length;
+}
+
+function isSeatEmptyByIndex(section: Seat[], index: number): boolean {
+	return section[index].status === "empty";
+}
+
+function isLeftSeatWithinBounds(leftSeatIndex: number): boolean {
+	return leftSeatIndex >= 0;
+}
+
+function isLeftSeatEmptyRightSeatWithinBoundsAndOccupied(
+	currentSection: Seat[],
+	leftSeatIndex: number,
+	rightSeatIndex: number,
+): boolean {
+	return (
+		isSeatEmptyByIndex(currentSection, leftSeatIndex) &&
+		isRightSeatWithinBounds(currentSection, rightSeatIndex) &&
+		isOccupied(currentSection[rightSeatIndex].status)
+	);
+}
+
+function isRightSeatWithinBoundsLeftAndRightSeatEmpty(
+	currentSection: Seat[],
+	leftSeatIndex: number,
+	rightSeatIndex: number,
+): boolean {
+	return (
+		isSeatEmptyByIndex(currentSection, leftSeatIndex) &&
+		isRightSeatWithinBounds(currentSection, rightSeatIndex) &&
+		isSeatEmptyByIndex(currentSection, rightSeatIndex)
+	);
+}
+
+function isRightSeatWithinBoundsLeftSeatEmptyAndOccupied(
+	currentSection: Seat[],
+	leftSeatIndex: number,
+	rightSeatIndex: number,
+): boolean {
+	return (
+		isOccupied(currentSection[leftSeatIndex].status) &&
+		isRightSeatWithinBounds(currentSection, rightSeatIndex) &&
+		isSeatEmptyByIndex(currentSection, leftSeatIndex)
+	);
+}
+
+function isRightSeatWithinBounds(
+	section: Seat[],
+	rightSeatIndex: number,
+): boolean {
+	return rightSeatIndex < section.length;
+}
+
+function isLeftRightSeatWithinBounds(
+	section: Seat[],
+	leftSeatIndex: number,
+	rightSeatIndex: number,
+): boolean {
+	return (
+		isLeftSeatWithinBounds(leftSeatIndex) &&
+		isRightSeatWithinBounds(section, rightSeatIndex)
+	);
+}
+
+function computeSeatIndexes(seatIndex: number): {
+	leftLeftSeatIndex: number;
+	leftSeatIndex: number;
+	currentIndex: number;
+	rightSeatIndex: number;
+	rightRightSeatIndex: number;
+} {
+	return {
+		leftLeftSeatIndex: seatIndex - 2,
+		leftSeatIndex: seatIndex - 1,
+		currentIndex: seatIndex,
+		rightSeatIndex: seatIndex + 1,
+		rightRightSeatIndex: seatIndex + 2,
+	};
+}
+
+/**
+ * Get the status of the left left seat and treat out-of-bounds seats as
+ * occupied
+ */
+function getLeftLeftSeatStatus(
+	section: Seat[],
+	leftLeftSeatIndex: number,
+): Seat["status"] {
+	return leftLeftSeatIndex >= 0
+		? section[leftLeftSeatIndex].status
+		: "occupied";
+}
+
+/**
+ * Get the status of the right right seat and treat out-of-bounds seats as
+ * occupied
+ */
+function getRightRightSeatStatus(
+	section: Seat[],
+	rightRightSeatIndex: number,
+): Seat["status"] {
+	return rightRightSeatIndex < section.length
+		? section[rightRightSeatIndex].status
+		: "occupied";
+}
+
+function isOccupied(seatStatus: Seat["status"]): boolean {
+	return seatStatus === "occupied" || seatStatus === "temp-occupied";
+}
+
+export function pickSeats(
+	seats: Seat[],
+	seatsToSelect: string[],
+): PickSeatRes[] {
+	const clonedSeats = clonedArray(seats);
+
+	const clonedSeatsWithTempOccupied = updateSeatsWithTempOccupied(
+		clonedSeats,
+		seatsToSelect,
+	);
+
+	const results: PickSeatRes[] = [];
 
 	for (const seatIdx of seatsToSelect) {
-		const seat = clonedSeatsWithTempOccupied.find(
-			(_seat) => _seat.id === seatIdx,
-		);
+		const seat = getCurrentSeat(clonedSeatsWithTempOccupied, seatIdx);
 
 		if (!seat) {
-			// Handle error if seat is not found
 			results.push({
 				seatId: seatIdx,
 				success: false,
@@ -334,18 +464,15 @@ export function pickSeats(
 			continue;
 		}
 
-		const currentSection = clonedSeatsWithTempOccupied.filter(
-			(_seat) => _seat.column === seat.column && _seat.row === seat.row,
+		const currentSection = getCurrentSection(
+			clonedSeatsWithTempOccupied,
+			seat.column,
+			seat.row,
 		);
 
-		const seatIndex = currentSection.findIndex(
-			(_seat) => _seat.id === seat.id,
-		);
+		const seatIndex = getSeatIndex(currentSection, seatIdx);
 
-		const seatIndexInArray = seatIndex;
-
-		// Check if the seat index is within the bounds of the seats array
-		if (seatIndexInArray < 0 || seatIndexInArray >= currentSection.length) {
+		if (isSeatOutOfBounds(currentSection, seatIndex)) {
 			results.push({
 				seatId: seatIdx,
 				success: false,
@@ -354,8 +481,7 @@ export function pickSeats(
 			continue;
 		}
 
-		// Check if the seat is already occupied
-		if (currentSection[seatIndexInArray].status !== "temp-occupied") {
+		if (!isOccupied(currentSection[seatIndex].status)) {
 			results.push({
 				seatId: seatIdx,
 				success: false,
@@ -364,56 +490,43 @@ export function pickSeats(
 			continue;
 		}
 
-		// Check if there is a single seat left and right
-		const leftLeftSeatIndex = seatIndexInArray - 2;
-		const leftSeatIndex = seatIndexInArray - 1;
-		const rightSeatIndex = seatIndexInArray + 1;
-		const rightRightSeatIndex = seatIndexInArray + 2;
+		const computedSeatIndexes = computeSeatIndexes(seatIndex);
 
-		const leftLeftSeatStatus: Seat["status"] =
-			leftLeftSeatIndex >= 0
-				? currentSection[leftLeftSeatIndex].status
-				: "occupied"; // Treat out-of-bounds seats as occupied
-		const rightRightSeatStatus: Seat["status"] =
-			rightRightSeatIndex < currentSection.length
-				? currentSection[rightRightSeatIndex].status
-				: "occupied"; // Treat out-of-bounds seats as occupied
+		const leftLeftSeatStatus = getLeftLeftSeatStatus(
+			currentSection,
+			computedSeatIndexes.leftLeftSeatIndex,
+		);
 
-		// if (
-		// 	(isOccupied(leftLeftSeatStatus) && leftSeatIndex >= 0) ||
-		// 	(isOccupied(rightRightSeatStatus) &&
-		// 		rightSeatIndex < currentSection.length)
-		// ) {
-		// 	console.log("item 1");
-		// 	if (
-		// 		currentSection[leftSeatIndex].status === "empty" &&
-		// 		rightSeatIndex < currentSection.length &&
-		// 		currentSection[rightSeatIndex].status === "empty"
-		// 	) {
-		// 		results.push({
-		// 			success: false,
-		// 			message: `Error 1: Selecting seat ${seatIdx} would leave a single seat left or right.`,
-		// 		});
-		// 		continue;
-		// 	}
-		// }
+		const rightRightSeatStatus = getRightRightSeatStatus(
+			currentSection,
+			computedSeatIndexes.rightRightSeatIndex,
+		);
 
 		if (
 			isOccupied(leftLeftSeatStatus) &&
 			isOccupied(rightRightSeatStatus) &&
-			leftSeatIndex >= 0 &&
-			rightSeatIndex < currentSection.length
+			isLeftRightSeatWithinBounds(
+				currentSection,
+				computedSeatIndexes.leftSeatIndex,
+				computedSeatIndexes.rightSeatIndex,
+			)
 		) {
 			if (
-				(currentSection[leftSeatIndex].status === "empty" &&
-					rightSeatIndex < currentSection.length &&
-					isOccupied(currentSection[rightSeatIndex].status)) ||
-				(isOccupied(currentSection[leftSeatIndex].status) &&
-					rightSeatIndex < currentSection.length &&
-					currentSection[rightSeatIndex].status === "empty") ||
-				(currentSection[leftSeatIndex].status === "empty" &&
-					rightSeatIndex < currentSection.length &&
-					currentSection[rightSeatIndex].status === "empty")
+				isLeftSeatEmptyRightSeatWithinBoundsAndOccupied(
+					currentSection,
+					computedSeatIndexes.leftSeatIndex,
+					computedSeatIndexes.rightSeatIndex,
+				) ||
+				isRightSeatWithinBoundsLeftSeatEmptyAndOccupied(
+					currentSection,
+					computedSeatIndexes.leftSeatIndex,
+					computedSeatIndexes.rightSeatIndex,
+				) ||
+				isRightSeatWithinBoundsLeftAndRightSeatEmpty(
+					currentSection,
+					computedSeatIndexes.leftSeatIndex,
+					computedSeatIndexes.rightSeatIndex,
+				)
 			) {
 				results.push({
 					seatId: seatIdx,
@@ -424,12 +537,16 @@ export function pickSeats(
 			}
 		}
 
-		if (isOccupied(leftLeftSeatStatus) && leftSeatIndex >= 0) {
+		if (
+			isOccupied(leftLeftSeatStatus) &&
+			isLeftSeatWithinBounds(computedSeatIndexes.leftSeatIndex)
+		) {
 			if (
-				rightSeatIndex >= seatIndexInArray &&
-				// isOccupied(clonedSeatsWithTempOccupied[leftSeatIndex].status) &&
-				// leftSeatIndex < currentSection.length &&
-				currentSection[leftSeatIndex].status === "empty"
+				computedSeatIndexes.rightSeatIndex >= seatIndex &&
+				isSeatEmptyByIndex(
+					currentSection,
+					computedSeatIndexes.leftSeatIndex,
+				)
 			) {
 				results.push({
 					seatId: seatIdx,
@@ -442,12 +559,14 @@ export function pickSeats(
 
 		if (
 			isOccupied(rightRightSeatStatus) &&
-			rightSeatIndex < currentSection.length
+			isRightSeatWithinBounds(
+				currentSection,
+				computedSeatIndexes.rightSeatIndex,
+			)
 		) {
 			if (
-				// leftSeatIndex <= seatIndexInArray &&
-				// rightSeatIndex > seatIndexInArray &&
-				currentSection[rightSeatIndex].status === "empty"
+				currentSection[computedSeatIndexes.rightSeatIndex].status ===
+				"empty"
 			) {
 				results.push({
 					seatId: seatIdx,
