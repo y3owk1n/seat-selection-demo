@@ -1,3 +1,4 @@
+"use client";
 import {
 	type Seat,
 	getSeatsByColumn,
@@ -14,19 +15,34 @@ import {
 } from "react";
 import { toast } from "sonner";
 
-interface UseSeatSelectionRet {
+interface UseSeatSelection {
+	/** A record of seats grouped by row number. */
 	seatsByRow: Record<number, Seat[]>;
+	/** A record of seats grouped by column number. */
 	seatsByColumn: Record<number, Record<number, Seat[]>>;
+	/** An array of selected seats. */
 	selectedSeat: Seat[];
+	/** Callback function to handle seat selection. */
 	onSelectSeat: (seatId: string) => void;
+	/** An array of seat IDs that encountered selection errors. */
 	selectionErrorIds: string[];
+	/** Function to update the array of seat IDs with selection errors. */
 	setSelectionErrorIds: Dispatch<SetStateAction<string[]>>;
+	/** An array of seat IDs that were successfully selected. */
 	selectionSuccessIds: string[];
+	/** Function to update the array of seat IDs with successful selections. */
 	setSelectionSuccessIds: Dispatch<SetStateAction<string[]>>;
+	/** The total amount for the selected seats. */
 	totalAmountForSeats: number;
 }
 
-export function useSeatSelection(seats: Seat[]): UseSeatSelectionRet {
+/**
+ * A React hook for managing seat selection.
+ *
+ * @param seats - An array of Seat objects representing available seats.
+ * @returns An object containing state variables and functions to manage seat selection.
+ */
+export function useSeatSelection(seats: Seat[]): UseSeatSelection {
 	const [selectedSeat, setSelectedSeat] = useState<Seat[]>([]);
 
 	const [totalAmountForSeats, setTotalAmountForSeats] = useState(0);
