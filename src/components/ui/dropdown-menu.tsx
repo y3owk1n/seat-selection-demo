@@ -173,10 +173,10 @@ const DropdownMenuSeparator = React.forwardRef<
 ));
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 
-const DropdownMenuShortcut = ({
+function DropdownMenuShortcut({
 	className,
 	...props
-}: React.HTMLAttributes<HTMLSpanElement>) => {
+}: React.HTMLAttributes<HTMLSpanElement>): React.JSX.Element {
 	return (
 		<span
 			className={cn(
@@ -186,7 +186,7 @@ const DropdownMenuShortcut = ({
 			{...props}
 		/>
 	);
-};
+}
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 
 export {
