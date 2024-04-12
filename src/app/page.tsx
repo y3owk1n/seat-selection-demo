@@ -1,10 +1,21 @@
+"use client";
+
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import { Seats } from "@/components/seats";
-import TicketCard from "@/components/ticket-card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { initialSeatData } from "@/lib/seat-data";
+import { useState } from "react";
+import { tickets } from "@/lib/ticket-data";
+import TicketCard from "@/components/ticket-card";
+import Image from "next/image";
+import concertImage from "../../public/assets/concert-image-demo.jpg";
+import { useSeatSelection } from "@/hooks/use-seat-selection";
 
 export default function Home(): JSX.Element {
+	const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
+
+	const seatSelection = useSeatSelection(initialSeatData, selectedTicket);
+
 	return (
 		<main className="container flex flex-col gap-8 my-10">
 			<div className="flex gap-4">
@@ -15,9 +26,12 @@ export default function Home(): JSX.Element {
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div className="col-span-1">
-					<div className="bg-muted grid place-items-center rounded-md aspect-square">
-						Concert Image
-					</div>
+					<Image
+						src={concertImage}
+						alt="concert image"
+						placeholder="blur"
+						className="rounded-md"
+					/>
 				</div>
 				<div className="col-span-1">
 					<ScrollArea className="border aspect-square rounded-md p-4">
@@ -25,13 +39,27 @@ export default function Home(): JSX.Element {
 							<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
 								Choose Your Tickets
 							</h2>
-							<TicketCard />
+							{tickets.map((ticket) => (
+								<TicketCard
+									key={ticket.id}
+									ticket={ticket}
+									selectedTicket={selectedTicket}
+									setSelectedTicket={setSelectedTicket}
+									selectionErrorIds={
+										seatSelection.selectionErrorIds
+									}
+									selectionSuccessIds={
+										seatSelection.selectionSuccessIds
+									}
+									seats={initialSeatData}
+								/>
+							))}
 						</div>
 						<ScrollBar orientation="vertical" />
 					</ScrollArea>
 				</div>
 			</div>
-			<Seats seats={initialSeatData} />
+			{selectedTicket ? <Seats seatSelection={seatSelection} /> : null}
 		</main>
 	);
 }

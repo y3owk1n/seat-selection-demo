@@ -15,7 +15,7 @@ import {
 } from "react";
 import { toast } from "sonner";
 
-interface UseSeatSelection {
+export interface UseSeatSelection {
 	/** A record of seats grouped by row number. */
 	seatsByRow: Record<number, Seat[]>;
 	/** A record of seats grouped by column number. */
@@ -34,6 +34,8 @@ interface UseSeatSelection {
 	setSelectionSuccessIds: Dispatch<SetStateAction<string[]>>;
 	/** The total amount for the selected seats. */
 	totalAmountForSeats: number;
+	/** Function to clear all seats data. */
+	resetSeatsSelection: () => void;
 }
 
 /**
@@ -42,7 +44,10 @@ interface UseSeatSelection {
  * @param seats - An array of Seat objects representing available seats.
  * @returns An object containing state variables and functions to manage seat selection.
  */
-export function useSeatSelection(seats: Seat[]): UseSeatSelection {
+export function useSeatSelection(
+	seats: Seat[],
+	selectedTicket: string | null,
+): UseSeatSelection {
 	const [selectedSeat, setSelectedSeat] = useState<Seat[]>([]);
 
 	const [totalAmountForSeats, setTotalAmountForSeats] = useState(0);
@@ -53,7 +58,7 @@ export function useSeatSelection(seats: Seat[]): UseSeatSelection {
 		[],
 	);
 
-	const seatsByRow = getSeatsByRow(seats);
+	const seatsByRow = getSeatsByRow(seats, selectedTicket);
 
 	const seatsByColumn = getSeatsByColumn(seatsByRow);
 
@@ -71,6 +76,13 @@ export function useSeatSelection(seats: Seat[]): UseSeatSelection {
 		},
 		[seats],
 	);
+
+	const resetSeatsSelection = useCallback(() => {
+		setSelectedSeat([]);
+		setSelectionErrorIds([]);
+		setSelectionSuccessIds([]);
+		setTotalAmountForSeats(0);
+	}, []);
 
 	useEffect(() => {
 		if (selectedSeat.length > 0) {
@@ -118,5 +130,6 @@ export function useSeatSelection(seats: Seat[]): UseSeatSelection {
 		selectionSuccessIds,
 		setSelectionSuccessIds,
 		totalAmountForSeats,
+		resetSeatsSelection,
 	};
 }
