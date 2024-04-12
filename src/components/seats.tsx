@@ -1,6 +1,7 @@
 "use client";
 
 import { useSeatSelection } from "@/hooks/use-seat-selection";
+import { formatCurrency } from "@/lib/formatter";
 import { type PickSeatRes, type Seat } from "@/lib/seat";
 import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
@@ -104,7 +105,11 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 					}
 					onClick={submitSelectSeat}
 				>
-					{isSubmitting ? "..." : "Submit"}
+					{isSubmitting
+						? "..."
+						: `Buy Now - ${formatCurrency(
+								seatSelection.totalAmountForSeats,
+							)}`}
 				</Button>
 			</div>
 		</div>
@@ -185,11 +190,7 @@ function SeatsSeat(props: {
 		>
 			<span className="font-bold">{props.seat.id}</span>
 			<span className="text-[8px] text-muted-foreground">
-				{new Intl.NumberFormat("en-US", {
-					style: "currency",
-					currency: "MYR",
-					maximumFractionDigits: 0,
-				}).format(props.seat.price)}
+				{formatCurrency(props.seat.price)}
 			</span>
 		</Button>
 	);
