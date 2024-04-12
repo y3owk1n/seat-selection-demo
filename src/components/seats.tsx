@@ -189,7 +189,7 @@ function SeatsSeat(props: {
 					: "",
 			)}
 		>
-			<span className="font-bold">{props.seat.id}</span>
+			<span className="font-bold">{props.seat.label}</span>
 			<span className="text-[8px] text-muted-foreground">
 				{formatCurrency(props.seat.price)}
 			</span>
