@@ -2,13 +2,13 @@
 
 import { useSeatSelection } from "@/hooks/use-seat-selection";
 import { formatCurrency } from "@/lib/formatter";
+import { formatCurrency } from "@/lib/formatter";
 import { type PickSeatRes, type Seat } from "@/lib/seat";
 import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
-import { formatCurrency } from "@/lib/formatter";
 
 interface SeatsProps {
 	seats: Seat[];
