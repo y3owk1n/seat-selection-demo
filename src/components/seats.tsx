@@ -2,7 +2,6 @@
 
 import { useSeatSelection } from "@/hooks/use-seat-selection";
 import { formatCurrency } from "@/lib/formatter";
-import { formatCurrency } from "@/lib/formatter";
 import { type PickSeatRes, type Seat } from "@/lib/seat";
 import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
