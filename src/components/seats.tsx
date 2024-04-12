@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import { formatCurrency } from "@/lib/formatter";
 
 interface SeatsProps {
 	seats: Seat[];
