@@ -104,7 +104,7 @@ function Seats({ seats }: SeatsProps): JSX.Element {
 					disabled={
 						isSubmitting || !seatSelection.selectedSeat.length
 					}
-					onClick={submitSelectSeat}
+					onClick={() => void submitSelectSeat()}
 				>
 					{isSubmitting
 						? "..."
