@@ -13,6 +13,7 @@ export interface Seat {
 	 */
 	indexFromLeft: number;
 	status: SeatStatus;
+	sectionId: string;
 	category: string;
 	price: number;
 }

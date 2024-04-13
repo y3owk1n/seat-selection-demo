@@ -10,6 +10,11 @@ import { tickets } from "@/lib/ticket-data";
 import Image from "next/image";
 import { useState } from "react";
 import concertImage from "../../public/assets/concert-image-demo.jpg";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export default function Home(): JSX.Element {
 	const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
