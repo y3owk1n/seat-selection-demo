@@ -29,6 +29,7 @@ function SeatItem({
 
 	return (
 		<PathButton
+			id={seat.label}
 			transform={seat.transform}
 			d={seat.d}
 			onClick={() => {
