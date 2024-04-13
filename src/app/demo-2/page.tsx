@@ -193,11 +193,13 @@ export default function DemoTwoPage(): JSX.Element {
 						</p>
 
 						<div className="inline-flex gap-1 flex-wrap">
-							{seatSelection.selectedSeat.map((seat) => (
-								<Badge variant="secondary" key={seat.id}>
-									{seat.label}
-								</Badge>
-							))}
+							{seatSelection.selectedSeat
+								.sort((a, b) => a.label.localeCompare(b.label))
+								.map((seat) => (
+									<Badge variant="secondary" key={seat.id}>
+										{seat.label}
+									</Badge>
+								))}
 						</div>
 					</div>
 					<p className="text-sm text-primary-foreground/80">
