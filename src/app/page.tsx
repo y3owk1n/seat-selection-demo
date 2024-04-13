@@ -3,6 +3,11 @@
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import { Seats } from "@/components/seats";
 import TicketCard from "@/components/ticket-card";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useSeatSelection } from "@/hooks/use-seat-selection";
 import { initialSeatData } from "@/lib/seat-data";
@@ -10,11 +15,6 @@ import { tickets } from "@/lib/ticket-data";
 import Image from "next/image";
 import { useState } from "react";
 import concertImage from "../../public/assets/concert-image-demo.jpg";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 
 export default function Home(): JSX.Element {
 	const [selectedTicket, setSelectedTicket] = useState<string | null>(null);

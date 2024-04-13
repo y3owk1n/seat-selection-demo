@@ -1,3 +1,9 @@
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Separator } from "@/components/ui/separator";
 import { formatCurrency } from "@/lib/formatter";
 import { type Seat } from "@/lib/seat";
 import { type Ticket } from "@/lib/ticket";
@@ -5,12 +11,6 @@ import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type Dispatch, type SetStateAction } from "react";
-import { Separator } from "@/components/ui/separator";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import SectionCard from "./section-card";
 
 interface TicketCardProps {
