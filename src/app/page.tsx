@@ -8,6 +8,8 @@ import { Calendar, Pin } from "lucide-react";
 export default async function Home(): Promise<JSX.Element> {
 	const seats = await api.seat.seats();
 
+	const myLockedSeats = await api.seat.myLockedSeats();
+
 	const session = await getServerAuthSession();
 
 	return (
@@ -36,7 +38,11 @@ export default async function Home(): Promise<JSX.Element> {
 				</ul>
 			</div>
 
-			<ConcertSeatDetail seats={seats} session={session} />
+			<ConcertSeatDetail
+				myLockedSeats={myLockedSeats}
+				seats={seats}
+				session={session}
+			/>
 		</main>
 	);
 }

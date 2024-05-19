@@ -1,4 +1,12 @@
+import dayjs from "dayjs";
+import { timezoneKL } from "./date";
 import { clonedArray } from "./utils";
+
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 import { type Seat as PrismaSeat } from "@prisma/client";
 
@@ -297,6 +305,20 @@ export interface PickSeatRes {
 	success: boolean;
 	seatId: string;
 	message?: string;
+}
+
+export function getSeatStatus(
+	currentStatus: Seat["status"],
+	lockedTill: Date | null,
+): Seat["status"] {
+	if (
+		currentStatus !== "OCCUPIED" &&
+		lockedTill &&
+		lockedTill > dayjs().tz(timezoneKL).toDate()
+	)
+		return "OCCUPIED";
+
+	return currentStatus;
 }
 
 /**
