@@ -7,6 +7,7 @@
 		"format": "biome check --apply . && biome format --write .",
 		"dev": "next dev --turbo",
 		"lint": "next lint",
+		"typecheck": "tsc --noEmit",
 		"start": "next start",
 		"build": "next build",
 		"clean:lock": "rm -f pnpm-lock.yaml",
