@@ -5,15 +5,19 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { PathButton } from "@/components/ui/path";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { env } from "@/env";
 import {
 	type UseSeatSelection,
 	useSeatSelection,
 } from "@/hooks/use-seat-selection";
 import { useZoom } from "@/hooks/use-zoom";
+import { timezoneKL } from "@/lib/date";
 import { formatCurrency } from "@/lib/formatter";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { type Seat } from "@prisma/client";
+import { loadStripe } from "@stripe/stripe-js";
+import dayjs from "dayjs";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import { type Session } from "next-auth";
 import { useCallback, useState } from "react";
@@ -21,13 +25,28 @@ import { toast } from "sonner";
 import { LoginForm } from "../shared/login";
 import { ResponsiveDialogDrawer } from "../shared/responsive-dialog-drawer";
 
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(timezone);
+dayjs.extend(utc);
+
 function SeatItem({
 	seat,
 	seatSelection,
-}: { seat: Seat; seatSelection: UseSeatSelection }): JSX.Element {
+	session,
+}: {
+	seat: Seat;
+	seatSelection: UseSeatSelection;
+	session: Session | null;
+}): JSX.Element {
 	const selected = seatSelection.selectedSeat.some(
 		(_seat) => _seat.id === seat.id,
 	);
+
+	const isMyLockedSeat = seat.lockedByUserId === session?.user.id;
+	const isLocked =
+		seat.lockedTill && seat.lockedTill > dayjs().tz(timezoneKL).toDate();
 
 	return (
 		<PathButton
@@ -37,10 +56,17 @@ function SeatItem({
 			onClick={() => {
 				seatSelection.onSelectSeat(seat.id);
 			}}
-			aria-disabled={seat.status === "OCCUPIED"}
+			aria-disabled={
+				seat.status === "OCCUPIED" && !(isMyLockedSeat && isLocked)
+			}
 			className={cn(
 				"relative ring aria-[disabled=true]:pointer-events-none aria-[disabled=true]:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+				!selected &&
+					"aria-[disabled=true]:fill-red-500 aria-[disabled=true]:stroke-white-500",
 				selected ? "fill-primary hover:fill-primary/90" : "",
+				isMyLockedSeat && isLocked
+					? "fill-orange-500 stroke-white-500"
+					: "",
 				seatSelection.selectionErrorIds.includes(seat.id)
 					? "stroke-red-500 stroke-2 hover:stroke-red-500"
 					: "",
@@ -54,6 +80,7 @@ function SeatItem({
 
 interface ConcertSeatDetailProps {
 	seats: Seat[];
+	myLockedSeats: Seat[];
 	session: Session | null;
 }
 
@@ -62,7 +89,7 @@ export default function ConcertSeatDetail(
 ): JSX.Element {
 	const { seats, session } = props;
 
-	const seatSelection = useSeatSelection(seats);
+	const seatSelection = useSeatSelection(seats, props.myLockedSeats);
 	const zoom = useZoom({});
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -106,6 +133,10 @@ export default function ConcertSeatDetail(
 			seatSelection.setSelectionSuccessIds(
 				filteredSuccess.map((r) => r.seatId),
 			);
+
+			if (filteredSuccess.length) {
+				await redirectToCheckout(filteredSuccess.map((r) => r.seatId));
+			}
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
@@ -114,6 +145,39 @@ export default function ConcertSeatDetail(
 			setIsSubmitting(false);
 		}
 	}, [seatSelection, selectSeat]);
+
+	async function redirectToCheckout(seatsIds: string[]) {
+		try {
+			const stripe = await loadStripe(
+				env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+			);
+
+			if (!stripe) throw new Error("Stripe failed to initialize.");
+
+			const checkoutResponse = await fetch("/api/stripe/checkout", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					seats: seatsIds,
+				}),
+			});
+
+			const { sessionId } = (await checkoutResponse.json()) as {
+				sessionId: string;
+			};
+			const stripeError = await stripe.redirectToCheckout({ sessionId });
+
+			if (stripeError) {
+				toast.error(stripeError.error.message);
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+		}
+	}
 
 	return (
 		<>
@@ -159,6 +223,7 @@ export default function ConcertSeatDetail(
 									key={seat.id}
 									seat={seat}
 									seatSelection={seatSelection}
+									session={session}
 								/>
 							))}
 						</svg>
@@ -198,6 +263,7 @@ export default function ConcertSeatDetail(
 							isSubmitting || !seatSelection.selectedSeat.length
 						}
 						onClick={() => void submitSelectSeat()}
+						isLoading={isSubmitting}
 					>
 						Next
 					</Button>
