@@ -1,5 +1,5 @@
+import { initialSeats } from "@/lib/seat-data";
 import { pickSeats } from "@/lib/seat";
-import { initialSeatData } from "@/lib/seat-data";
 
 interface SeatRequestBody {
 	selectedSeatsIds: string[];
@@ -12,7 +12,7 @@ export async function POST(request: Request): Promise<Response> {
 		return Response.json({ error: "No selected seats" }, { status: 400 });
 	}
 
-	const res = pickSeats(initialSeatData, body.selectedSeatsIds);
+	const res = pickSeats(initialSeats, body.selectedSeatsIds);
 
 	return Response.json(res);
 }

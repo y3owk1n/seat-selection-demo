@@ -1,4 +1,3 @@
-import { getTicketDetails } from "./ticket";
 import { clonedArray } from "./utils";
 
 type SeatStatus = "empty" | "occupied" | "temp-occupied" | null;
@@ -13,8 +12,6 @@ export interface Seat {
 	 */
 	indexFromLeft: number;
 	status: SeatStatus;
-	sectionId: string;
-	category: string;
 	price: number;
 	/**
 	 * PathProperties to render a seat
@@ -29,29 +26,14 @@ export interface Seat {
  * @param seats - An array of Seat objects.
  * @returns A record where keys are row numbers and values are arrays of Seat objects.
  */
-export function getSeatsByRow(
-	seats: Seat[],
-	selectedTicket: string | null,
-): Record<number, Seat[]> {
-	if (!selectedTicket) return {};
-
-	const ticket = getTicketDetails(selectedTicket);
-
-	if (!ticket) return {};
-
-	const filteredSeats = seats.filter(
-		(seat) => seat.category === ticket.label,
-	);
-	const seatsByRow = filteredSeats.reduce<Record<number, Seat[]>>(
-		(acc, seat) => {
-			const { row } = seat;
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --- its fine
-			acc[row] = acc[row] || [];
-			acc[row].push(seat);
-			return acc;
-		},
-		{},
-	);
+export function getSeatsByRow(seats: Seat[]): Record<number, Seat[]> {
+	const seatsByRow = seats.reduce<Record<number, Seat[]>>((acc, seat) => {
+		const { row } = seat;
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --- its fine
+		acc[row] = acc[row] || [];
+		acc[row].push(seat);
+		return acc;
+	}, {});
 
 	return seatsByRow;
 }
