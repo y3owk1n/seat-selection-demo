@@ -1,11 +1,11 @@
 "use client";
 import {
-	type Seat,
 	getSeatsByColumn,
 	getSeatsByRow,
 	pickSeats,
 	toggleSeat,
 } from "@/lib/seat";
+import { type Seat as PrismaSeat } from "@prisma/client";
 import {
 	type Dispatch,
 	type SetStateAction,
@@ -14,6 +14,8 @@ import {
 	useState,
 } from "react";
 import { toast } from "sonner";
+
+type Seat = Omit<PrismaSeat, "createdAt" | "updatedAt">;
 
 export interface UseSeatSelection {
 	/** A record of seats grouped by row number. */
@@ -96,7 +98,7 @@ export function useSeatSelection(seats: Seat[]): UseSeatSelection {
 				setSelectionErrorIds(filteredErrors.map((r) => r.seatId));
 
 				filteredErrors
-					.map((r) => r.message as string)
+					.map((r) => r.message)
 					.forEach((error) =>
 						toast.error("Error From Client", {
 							description: error,

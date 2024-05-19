@@ -1,24 +1,8 @@
 import { clonedArray } from "./utils";
 
-type SeatStatus = "empty" | "occupied" | "temp-occupied" | null;
+import { type Seat as PrismaSeat } from "@prisma/client";
 
-export interface Seat {
-	id: string;
-	label: string;
-	column: number;
-	row: number;
-	/**
-	 * Index from left of its own sections and it should start from 1
-	 */
-	indexFromLeft: number;
-	status: SeatStatus;
-	price: number;
-	/**
-	 * PathProperties to render a seat
-	 */
-	transform?: string;
-	d?: string;
-}
+type Seat = Omit<PrismaSeat, "createdAt" | "updatedAt">;
 
 /**
  * Retrieves seats grouped by row number.
@@ -80,8 +64,8 @@ function updateSeatsWithTempOccupied(
 	return seats.map((seat) => ({
 		...seat,
 		status:
-			seatsToSelect.includes(seat.id) && seat.status === "empty"
-				? "temp-occupied"
+			seatsToSelect.includes(seat.id) && seat.status === "EMPTY"
+				? "TEMP_OCCUPIED"
 				: seat.status,
 	}));
 }
@@ -138,7 +122,7 @@ function isSeatOutOfBounds(section: Seat[], seatIndex: number): boolean {
  * @returns A boolean indicating whether the seat is occupied.
  */
 function isOccupied(seatStatus: Seat["status"]): boolean {
-	return seatStatus === "occupied" || seatStatus === "temp-occupied";
+	return seatStatus === "OCCUPIED" || seatStatus === "TEMP_OCCUPIED";
 }
 
 /**
@@ -149,7 +133,7 @@ function isOccupied(seatStatus: Seat["status"]): boolean {
  * @returns A boolean indicating whether the seat at the specified index is empty.
  */
 function isSeatEmptyByIndex(section: Seat[], index: number): boolean {
-	return section[index]?.status === "empty";
+	return section[index]?.status === "EMPTY";
 }
 
 /**
@@ -290,7 +274,7 @@ function getLeftLeftSeatStatus(
 ): Seat["status"] {
 	return leftLeftSeatIndex >= 0
 		? section[leftLeftSeatIndex]!.status
-		: "occupied";
+		: "OCCUPIED";
 }
 
 /**
@@ -306,7 +290,7 @@ function getRightRightSeatStatus(
 ): Seat["status"] {
 	return rightRightSeatIndex < section.length
 		? section[rightRightSeatIndex]!.status
-		: "occupied";
+		: "OCCUPIED";
 }
 
 export interface PickSeatRes {
@@ -491,7 +475,7 @@ export function pickSeats(
 		) {
 			if (
 				currentSection[computedSeatIndexes.rightSeatIndex]!.status ===
-				"empty"
+				"EMPTY"
 			) {
 				results.push({
 					seatId: seatIdx,
