@@ -1,6 +1,5 @@
 "use client";
 
-import { ModeToggle } from "@/components/dark-mode-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -12,10 +11,10 @@ import {
 } from "@/hooks/use-seat-selection";
 import { useZoom } from "@/hooks/use-zoom";
 import { formatCurrency } from "@/lib/formatter";
-import { type PickSeatRes } from "@/lib/seat";
 import { cn } from "@/lib/utils";
+import { api } from "@/trpc/react";
 import { type Seat } from "@prisma/client";
-import { Calendar, Pin, ZoomIn, ZoomOut } from "lucide-react";
+import { ZoomIn, ZoomOut } from "lucide-react";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
@@ -64,6 +63,13 @@ export default function ConcertSeatDetail(
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
+	const selectSeat = api.seat.selectSeats.useMutation({
+		// onSuccess: () => {
+		//   router.refresh();
+		//   setName("");
+		// },
+	});
+
 	const submitSelectSeat = useCallback(async () => {
 		toast.dismiss();
 		seatSelection.setSelectionErrorIds([]);
@@ -74,20 +80,7 @@ export default function ConcertSeatDetail(
 		);
 
 		try {
-			const rawRes = await fetch("/api/select-seat", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ selectedSeatsIds }),
-			});
-
-			const res = (await rawRes.json()) as PickSeatRes[];
-
-			if (!rawRes.ok) {
-				toast.error("Something went wrong. Please try again later.");
-				return;
-			}
+			const res = await selectSeat.mutateAsync({ selectedSeatsIds });
 
 			const filteredErrors = res.filter((r) => !r.success);
 
@@ -116,7 +109,7 @@ export default function ConcertSeatDetail(
 		} finally {
 			setIsSubmitting(false);
 		}
-	}, [seatSelection]);
+	}, [seatSelection, selectSeat]);
 
 	return (
 		<>
