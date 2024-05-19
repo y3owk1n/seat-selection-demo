@@ -1,46 +1,40 @@
-const { resolve } = require("node:path");
-
-const project = resolve(__dirname, "tsconfig.json");
-
 /** @type {import("eslint").Linter.Config} */
 const config = {
-	root: true,
-	plugins: ["only-warn", "@typescript-eslint"],
-	extends: [
-		"@vercel/style-guide/eslint/node",
-		"@vercel/style-guide/eslint/typescript",
-		"@vercel/style-guide/eslint/browser",
-		"@vercel/style-guide/eslint/react",
-		"@vercel/style-guide/eslint/next",
-	].map(require.resolve),
+	parser: "@typescript-eslint/parser",
 	parserOptions: {
-		project,
+		project: true,
 	},
-	settings: {
-		"import/resolver": {
-			typescript: {
-				project,
-			},
-		},
-	},
-	globals: {
-		React: true,
-		JSX: true,
-	},
-	ignorePatterns: [
-		// Ignore dotfiles
-		"**/*.js",
-		"**/*.mjs",
-		"**/*.cjs",
-		"**/*.config.cjs",
-		"node_modules/",
-		"dist/",
+	plugins: ["@typescript-eslint", "only-warn"],
+	extends: [
+		"next/core-web-vitals",
+		"plugin:@typescript-eslint/recommended-type-checked",
+		"plugin:@typescript-eslint/stylistic-type-checked",
 	],
 	rules: {
-		"import/no-default-export": "off",
-		"import/order": "off",
-		"@typescript-eslint/restrict-template-expressions": "off",
+		"@typescript-eslint/array-type": "off",
+		"@typescript-eslint/consistent-type-definitions": "off",
+		"@typescript-eslint/consistent-type-imports": [
+			"warn",
+			{
+				prefer: "type-imports",
+				fixStyle: "inline-type-imports",
+			},
+		],
+		"@typescript-eslint/no-unused-vars": [
+			"warn",
+			{
+				argsIgnorePattern: "^_",
+			},
+		],
+		"@typescript-eslint/require-await": "off",
+		"@typescript-eslint/no-misused-promises": [
+			"error",
+			{
+				checksVoidReturn: {
+					attributes: false,
+				},
+			},
+		],
 	},
 };
-
 module.exports = config;
