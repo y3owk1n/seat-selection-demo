@@ -29,9 +29,8 @@ export interface Seat {
 export function getSeatsByRow(seats: Seat[]): Record<number, Seat[]> {
 	const seatsByRow = seats.reduce<Record<number, Seat[]>>((acc, seat) => {
 		const { row } = seat;
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --- its fine
-		acc[row] = acc[row] || [];
-		acc[row].push(seat);
+		acc[row] = acc[row] ?? [];
+		acc[row]?.push(seat);
 		return acc;
 	}, {});
 
@@ -51,12 +50,12 @@ export function getSeatsByColumn(
 		seatsByRow,
 	).reduce<Record<number, Record<number, Seat[]>>>((acc, rowKey) => {
 		const rowSeats = seatsByRow[Number(rowKey)];
+		if (!rowSeats) return acc;
 		acc[Number(rowKey)] = rowSeats.reduce<Record<number, Seat[]>>(
 			(rowAcc, seat) => {
 				const { column } = seat;
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --- its fine
-				rowAcc[column] = rowAcc[column] || [];
-				rowAcc[column].push(seat);
+				rowAcc[column] = rowAcc[column] ?? [];
+				rowAcc[column]?.push(seat);
 				return rowAcc;
 			},
 			{},
@@ -150,7 +149,7 @@ function isOccupied(seatStatus: Seat["status"]): boolean {
  * @returns A boolean indicating whether the seat at the specified index is empty.
  */
 function isSeatEmptyByIndex(section: Seat[], index: number): boolean {
-	return section[index].status === "empty";
+	return section[index]?.status === "empty";
 }
 
 /**
@@ -212,7 +211,7 @@ function isLeftSeatEmptyRightSeatWithinBoundsAndOccupied(
 	return (
 		isSeatEmptyByIndex(currentSection, leftSeatIndex) &&
 		isRightSeatWithinBounds(currentSection, rightSeatIndex) &&
-		isOccupied(currentSection[rightSeatIndex].status)
+		isOccupied(currentSection[rightSeatIndex]!.status)
 	);
 }
 
@@ -230,7 +229,7 @@ function isRightSeatWithinBoundsAndOccupiedLeftSeatEmpty(
 	rightSeatIndex: number,
 ): boolean {
 	return (
-		isOccupied(currentSection[leftSeatIndex].status) &&
+		isOccupied(currentSection[leftSeatIndex]!.status) &&
 		isRightSeatWithinBounds(currentSection, rightSeatIndex) &&
 		isSeatEmptyByIndex(currentSection, rightSeatIndex)
 	);
@@ -290,7 +289,7 @@ function getLeftLeftSeatStatus(
 	leftLeftSeatIndex: number,
 ): Seat["status"] {
 	return leftLeftSeatIndex >= 0
-		? section[leftLeftSeatIndex].status
+		? section[leftLeftSeatIndex]!.status
 		: "occupied";
 }
 
@@ -306,7 +305,7 @@ function getRightRightSeatStatus(
 	rightRightSeatIndex: number,
 ): Seat["status"] {
 	return rightRightSeatIndex < section.length
-		? section[rightRightSeatIndex].status
+		? section[rightRightSeatIndex]!.status
 		: "occupied";
 }
 
@@ -389,7 +388,7 @@ export function pickSeats(
 		/**
 		 * Check if seat is already occupied
 		 */
-		if (!isOccupied(currentSection[seatIndex].status)) {
+		if (!isOccupied(currentSection[seatIndex]!.status)) {
 			results.push({
 				seatId: seatIdx,
 				success: false,
@@ -491,7 +490,7 @@ export function pickSeats(
 			)
 		) {
 			if (
-				currentSection[computedSeatIndexes.rightSeatIndex].status ===
+				currentSection[computedSeatIndexes.rightSeatIndex]!.status ===
 				"empty"
 			) {
 				results.push({
