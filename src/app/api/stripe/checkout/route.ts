@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 
+import { EXPIRES_IN_MINS } from "@/lib/constants";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 
@@ -57,7 +58,10 @@ export async function POST(req: NextRequest) {
 	try {
 		const checkoutSession = await stripe.checkout.sessions.create({
 			mode: "payment",
-			expires_at: dayjs().tz(timezoneKL).add(20, "minutes").unix(),
+			expires_at: dayjs()
+				.tz(timezoneKL)
+				.add(EXPIRES_IN_MINS, "minutes")
+				.unix(),
 			submit_type: "pay",
 			line_items: lineItems,
 			metadata: {

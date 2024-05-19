@@ -1,3 +1,4 @@
+import { EXPIRES_IN_MINS } from "@/lib/constants";
 import { timezoneKL } from "@/lib/date";
 import { getSeatStatus, pickSeats } from "@/lib/seat";
 import {
@@ -64,7 +65,7 @@ export const seatRouter = createTRPCRouter({
 					data: {
 						lockedByUserId: ctx.session.user.id,
 						lockedTill: dayjs()
-							.add(20, "minutes")
+							.add(EXPIRES_IN_MINS, "minutes")
 							.tz(timezoneKL)
 							.toDate(),
 					},
