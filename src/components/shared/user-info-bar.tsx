@@ -25,7 +25,14 @@ export default function UserInfoBar(props: UserInfoBarProps): JSX.Element {
 						</AvatarFallback>
 					</Avatar>
 
-					<span>Hello! {props.session.user.name}</span>
+					<span>
+						Hello!{" "}
+						<Button asChild variant="link" className="p-0">
+							<Link href="/update-profile">
+								{props.session.user.name}
+							</Link>
+						</Button>
+					</span>
 					<span className="mx-2">|</span>
 					<Button asChild variant="link" className="p-0">
 						<Link href="/order">View orders</Link>

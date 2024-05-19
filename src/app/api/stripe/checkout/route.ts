@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
 
 	try {
 		const checkoutSession = await stripe.checkout.sessions.create({
+			customer_email: session.user.email ?? undefined,
 			mode: "payment",
 			expires_at: dayjs()
 				.tz(timezoneKL)

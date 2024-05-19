@@ -1,7 +1,7 @@
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import UserInfoBar from "@/components/shared/user-info-bar";
 import { Button } from "@/components/ui/button";
-import { getServerAuthSession } from "@/server/auth";
+import { getSessionAndCheckRedirect } from "@/lib/auth";
 import { api } from "@/trpc/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -11,7 +11,7 @@ export default async function ThankYou({
 }: {
 	searchParams: Record<string, string | string[] | undefined>;
 }): Promise<JSX.Element> {
-	const session = await getServerAuthSession();
+	const session = await getSessionAndCheckRedirect();
 
 	const sessionId = searchParams?.session_id;
 
@@ -43,7 +43,7 @@ export default async function ThankYou({
 				<p className="text-sm text-muted-foreground">
 					You can view your order{" "}
 					<Button asChild variant="link" className="p-0">
-						<Link href={`/order/${order.id}`}>here</Link>
+						<Link href={`/order/detail/${order.id}`}>here</Link>
 					</Button>
 					. Contact us if you have any questions.
 				</p>

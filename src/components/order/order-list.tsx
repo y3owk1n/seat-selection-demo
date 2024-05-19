@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import { formatCurrency } from "@/lib/formatter";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
 dayjs.extend(relativeTime);
 
 interface OrderListProps {
@@ -58,7 +59,16 @@ export default function OrderList(props: OrderListProps) {
 						{props.orderData.map((order) => (
 							<TableRow key={order.orderId}>
 								<TableCell>
-									<div>{order.orderId}</div>
+									<Button variant="link" className="p-0">
+										<Link
+											href={
+												`/order/detail/${order.orderId}` ??
+												"#"
+											}
+										>
+											{order.orderId}
+										</Link>
+									</Button>
 								</TableCell>
 								<TableCell className="table-cell">
 									<div className="flex gap-2 items-center flex-nowrap">

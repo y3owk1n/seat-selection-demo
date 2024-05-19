@@ -17,6 +17,38 @@ export const orderRouter = createTRPCRouter({
 				},
 			});
 		}),
+	orderByOrderId: protectedProcedure
+		.input(z.object({ orderId: z.string().min(1) }))
+		.query(async ({ ctx, input }) => {
+			const order = await ctx.db.order.findFirst({
+				where: {
+					id: input.orderId,
+					userId: ctx.session.user.id,
+				},
+				include: {
+					seat: true,
+				},
+			});
+
+			if (!order) {
+				return null;
+			}
+
+			const formattedOrder = {
+				orderId: order.id,
+				seats: order.seat.map((seat) => ({
+					label: seat.label,
+					price: seat.price,
+				})),
+				checkoutSessionId: order.checkoutSessionId,
+				receiptUrl: order.receiptUrl,
+				paidAt: order.createdAt,
+				updatedAt: order.updatedAt,
+				paidAmount: order.paidAmount,
+			};
+
+			return formattedOrder;
+		}),
 	orders: protectedProcedure.query(async ({ ctx }) => {
 		const orders = await ctx.db.order.findMany({
 			where: {
