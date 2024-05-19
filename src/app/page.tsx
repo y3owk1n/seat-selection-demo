@@ -1,7 +1,7 @@
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import ConcertSeatDetail from "@/components/homepage/concert-seat-detail";
 import UserInfoBar from "@/components/shared/user-info-bar";
-import { getServerAuthSession } from "@/server/auth";
+import { getSessionAndCheckRedirect } from "@/lib/auth";
 import { api } from "@/trpc/server";
 import { Calendar, Pin } from "lucide-react";
 
@@ -10,7 +10,7 @@ export default async function Home(): Promise<JSX.Element> {
 
 	const myLockedSeats = await api.seat.myLockedSeats();
 
-	const session = await getServerAuthSession();
+	const session = await getSessionAndCheckRedirect();
 
 	return (
 		<main className="container max-w-4xl flex flex-col gap-8 py-10 mb-24">
