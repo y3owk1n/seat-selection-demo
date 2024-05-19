@@ -44,10 +44,7 @@ export interface UseSeatSelection {
  * @param seats - An array of Seat objects representing available seats.
  * @returns An object containing state variables and functions to manage seat selection.
  */
-export function useSeatSelection(
-	seats: Seat[],
-	selectedTicket: string | null,
-): UseSeatSelection {
+export function useSeatSelection(seats: Seat[]): UseSeatSelection {
 	const [selectedSeat, setSelectedSeat] = useState<Seat[]>([]);
 
 	const [totalAmountForSeats, setTotalAmountForSeats] = useState(0);
@@ -58,7 +55,7 @@ export function useSeatSelection(
 		[],
 	);
 
-	const seatsByRow = getSeatsByRow(seats, selectedTicket);
+	const seatsByRow = getSeatsByRow(seats);
 
 	const seatsByColumn = getSeatsByColumn(seatsByRow);
 
