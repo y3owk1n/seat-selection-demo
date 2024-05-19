@@ -1,6 +1,7 @@
 "use client";
 import { type Session } from "next-auth";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { LoginForm } from "./login";
@@ -25,6 +26,10 @@ export default function UserInfoBar(props: UserInfoBarProps): JSX.Element {
 					</Avatar>
 
 					<span>Hello! {props.session.user.name}</span>
+					<span className="mx-2">|</span>
+					<Button asChild variant="link" className="p-0">
+						<Link href="/order">View orders</Link>
+					</Button>
 				</div>
 			) : (
 				<span>Login with your account now to continue</span>

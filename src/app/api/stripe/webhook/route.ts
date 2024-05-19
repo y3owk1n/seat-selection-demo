@@ -59,6 +59,7 @@ async function fulfilOrder({
 				},
 				receiptUrl: latestCharge?.receipt_url,
 				paymentMethod: "stripe",
+				paidAmount: latestCharge!.amount / 100,
 			},
 		});
 
