@@ -1,5 +1,5 @@
-import { seats } from "./seats-data-seed.js";
 import { PrismaClient } from "@prisma/client";
+import { seats } from "./seats-data-seed.js";
 const prisma = new PrismaClient();
 
 async function main() {
