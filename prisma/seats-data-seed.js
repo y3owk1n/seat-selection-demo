@@ -1,6 +1,4 @@
-import { type Seat } from "@prisma/client";
-
-export const initialSeats: Omit<Seat, "id" | "createdAt" | "updatedAt">[] = [
+export const seats = [
 	{
 		label: "S8",
 		column: 2,
