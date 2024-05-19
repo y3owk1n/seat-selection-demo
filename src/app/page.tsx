@@ -12,8 +12,8 @@ import {
 } from "@/hooks/use-seat-selection";
 import { useZoom } from "@/hooks/use-zoom";
 import { formatCurrency } from "@/lib/formatter";
-import { initialSeats } from "@/lib/seat-data";
 import { type PickSeatRes, type Seat } from "@/lib/seat";
+import { initialSeats } from "@/lib/seat-data";
 import { cn } from "@/lib/utils";
 import { Calendar, Pin, ZoomIn, ZoomOut } from "lucide-react";
 import { useCallback, useState } from "react";
