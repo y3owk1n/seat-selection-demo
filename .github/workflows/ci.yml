@@ -28,16 +28,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies with pnpm
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
-      # - name: Copy test envs
-      #   run: cat .env.example > .env
-      #
+      - name: Copy test envs
+        run: cat .env.example > .env
+
       - name: Run Lint
         run: pnpm lint
+
+      - name: Run Typecheck
+        run: pnpm typecheck
 
       - name: Run Formatting
         run: pnpm format
