@@ -1,13 +1,18 @@
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import ConcertSeatDetail from "@/components/homepage/concert-seat-detail";
+import UserInfoBar from "@/components/shared/user-info-bar";
+import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { Calendar, Pin } from "lucide-react";
 
 export default async function Home(): Promise<JSX.Element> {
 	const seats = await api.seat.seats();
 
+	const session = await getServerAuthSession();
+
 	return (
-		<main className="container flex flex-col gap-8 py-10 mb-24">
+		<main className="container max-w-4xl flex flex-col gap-8 py-10 mb-24">
+			<UserInfoBar session={session} />
 			<div className="flex gap-4">
 				<h1 className="flex-1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
 					Dance Concert 2024
@@ -31,7 +36,7 @@ export default async function Home(): Promise<JSX.Element> {
 				</ul>
 			</div>
 
-			<ConcertSeatDetail seats={seats} />
+			<ConcertSeatDetail seats={seats} session={session} />
 		</main>
 	);
 }
