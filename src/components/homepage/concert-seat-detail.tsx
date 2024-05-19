@@ -15,8 +15,11 @@ import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { type Seat } from "@prisma/client";
 import { ZoomIn, ZoomOut } from "lucide-react";
+import { type Session } from "next-auth";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
+import { LoginForm } from "../shared/login";
+import { ResponsiveDialogDrawer } from "../shared/responsive-dialog-drawer";
 
 function SeatItem({
 	seat,
@@ -51,12 +54,13 @@ function SeatItem({
 
 interface ConcertSeatDetailProps {
 	seats: Seat[];
+	session: Session | null;
 }
 
 export default function ConcertSeatDetail(
 	props: ConcertSeatDetailProps,
 ): JSX.Element {
-	const { seats } = props;
+	const { seats, session } = props;
 
 	const seatSelection = useSeatSelection(seats);
 	const zoom = useZoom({});
@@ -113,7 +117,7 @@ export default function ConcertSeatDetail(
 
 	return (
 		<>
-			<div className="max-w-4xl mx-auto w-full items-center p-2 md:p-8 flex flex-col gap-8">
+			<div className="w-full items-center flex flex-col gap-8">
 				<ButtonGroup>
 					<Button
 						variant="outline"
@@ -186,16 +190,27 @@ export default function ConcertSeatDetail(
 						{seatSelection.selectedSeat.length} tickets
 					</p>
 				</div>
-				<Button
-					type="button"
-					variant="secondary"
-					disabled={
-						isSubmitting || !seatSelection.selectedSeat.length
-					}
-					onClick={() => void submitSelectSeat()}
-				>
-					Next
-				</Button>
+				{session ? (
+					<Button
+						type="button"
+						variant="secondary"
+						disabled={
+							isSubmitting || !seatSelection.selectedSeat.length
+						}
+						onClick={() => void submitSelectSeat()}
+					>
+						Next
+					</Button>
+				) : (
+					<ResponsiveDialogDrawer
+						title="Sign In"
+						description="Use the following method to sign in"
+						buttonText="Login to continue"
+						buttonStyle="secondary"
+					>
+						<LoginForm />
+					</ResponsiveDialogDrawer>
+				)}
 			</div>
 		</>
 	);
