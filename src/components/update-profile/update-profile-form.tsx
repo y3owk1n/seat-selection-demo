@@ -18,14 +18,16 @@ import {
 	FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { type Session } from "next-auth";
+import Link from "next/link";
 
 const formSchema = updateProfileSchema;
 
 interface UpdateProfileFormProps {
-	name?: string | null | undefined;
-	fullName?: string | null | undefined;
-	email?: string | null | undefined;
-	phone?: string | null | undefined;
+	name: Session["user"]["name"];
+	fullName: Session["user"]["fullName"];
+	email: Session["user"]["email"];
+	phone: Session["user"]["phone"];
 }
 
 export default function UpdateProfileForm(props: UpdateProfileFormProps) {
