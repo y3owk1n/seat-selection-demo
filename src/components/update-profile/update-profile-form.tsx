@@ -24,9 +24,9 @@ import Link from "next/link";
 const formSchema = updateProfileSchema;
 
 interface UpdateProfileFormProps {
-	name: Session["user"]["name"];
+	name?: Session["user"]["name"];
 	fullName: Session["user"]["fullName"];
-	email: Session["user"]["email"];
+	email?: Session["user"]["email"];
 	phone: Session["user"]["phone"];
 }
 
