@@ -44,6 +44,12 @@ export default function UpdateProfileForm(props: UpdateProfileFormProps) {
 
 	const updateProfile = api.user.updateProfile.useMutation();
 
+	function useNameAsFullName() {
+		if (props.name) {
+			form.setValue("fullName", props.name);
+		}
+	}
+
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
 			await updateProfile.mutateAsync(values);
@@ -81,9 +87,24 @@ export default function UpdateProfileForm(props: UpdateProfileFormProps) {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Full Name</FormLabel>
+									<FormDescription>
+										How should we address you?
+									</FormDescription>
 									<FormControl>
 										<Input placeholder="Max" {...field} />
 									</FormControl>
+									{props.name && (
+										<FormDescription>
+											<Button
+												variant="link"
+												size="link"
+												className="ml-1 text-xs"
+												onClick={useNameAsFullName}
+											>
+												Use `{props.name}` as name
+											</Button>
+										</FormDescription>
+									)}
 									<FormMessage />
 								</FormItem>
 							)}
@@ -96,17 +117,18 @@ export default function UpdateProfileForm(props: UpdateProfileFormProps) {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Email</FormLabel>
+									<FormDescription>
+										Email is not changeable
+									</FormDescription>
 									<FormControl>
 										<Input
 											readOnly
+											disabled
 											type="email"
 											placeholder="Your email"
 											{...field}
 										/>
 									</FormControl>
-									<FormDescription>
-										Email is no changeable
-									</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -119,6 +141,10 @@ export default function UpdateProfileForm(props: UpdateProfileFormProps) {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Phone</FormLabel>
+									<FormDescription>
+										Please make sure this number is
+										reachable via WhatsApp
+									</FormDescription>
 									<FormControl>
 										<Input
 											type="tel"
@@ -141,6 +167,17 @@ export default function UpdateProfileForm(props: UpdateProfileFormProps) {
 					>
 						Update
 					</Button>
+					{props.phone && props.phone.length > 0 && (
+						<Button
+							variant="link"
+							size="link"
+							type="button"
+							className="w-full"
+							asChild
+						>
+							<Link href="/">Back To Home</Link>
+						</Button>
+					)}
 				</div>
 			</form>
 		</Form>

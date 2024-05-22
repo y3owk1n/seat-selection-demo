@@ -38,7 +38,7 @@ export default function RootLayout({
 						disableTransitionOnChange
 					>
 						{children}
-						<Toaster expand richColors />
+						<Toaster expand richColors closeButton />
 					</ThemeProvider>
 				</TRPCReactProvider>
 			</body>
