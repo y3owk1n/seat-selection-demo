@@ -6,6 +6,10 @@ import dayjs from "dayjs";
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 
+import {
+	collectionMethodKey,
+	collectionMethodMap,
+} from "@/lib/collection-method";
 import { EXPIRES_IN_MINS } from "@/lib/constants";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
@@ -47,13 +51,22 @@ export async function POST(req: NextRequest) {
 			price_data: {
 				currency: "myr",
 				product_data: {
-					name: item.label,
+					name: `Seat: ${item.label}`,
 				},
 				unit_amount: item.price * 100,
 			},
 			quantity: 1,
 		};
 	});
+
+	// Calculate total amount
+	const totalAmount = lineItems.reduce((total, currentItem) => {
+		return (
+			total + currentItem.price_data.unit_amount * currentItem.quantity
+		);
+	}, 0);
+
+	const processingFeeAmount = Math.round(totalAmount * 0.03);
 
 	try {
 		const checkoutSession = await stripe.checkout.sessions.create({
@@ -64,7 +77,33 @@ export async function POST(req: NextRequest) {
 				.add(EXPIRES_IN_MINS, "minutes")
 				.unix(),
 			submit_type: "pay",
-			line_items: lineItems,
+			line_items: [
+				...lineItems,
+				{
+					price_data: {
+						currency: "myr",
+						product_data: {
+							name: "Processing fee (3%)",
+						},
+						unit_amount: processingFeeAmount,
+					},
+					quantity: 1,
+				},
+			],
+			custom_fields: [
+				{
+					key: collectionMethodKey,
+					label: {
+						type: "custom",
+						custom: "Collection Method",
+					},
+					optional: false,
+					type: "dropdown",
+					dropdown: {
+						options: collectionMethodMap,
+					},
+				},
+			],
 			metadata: {
 				seats: JSON.stringify(body.seats), // stringify it, later we will parse it
 				user_id: session.user.id,

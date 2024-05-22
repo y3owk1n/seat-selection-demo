@@ -19,9 +19,11 @@ interface OrderDetailCardProps {
 		label: string;
 		price: number;
 	}[];
-	paidAmount: number | null;
+	subTotal: number;
+	paidAmount: number;
 	checkoutSessionId: string | null;
 	receiptUrl: string | null;
+	processingFeeAmount: number;
 }
 
 export default function OrderDetailCard(props: OrderDetailCardProps) {
@@ -67,29 +69,23 @@ export default function OrderDetailCard(props: OrderDetailCardProps) {
 					</ul>
 					<Separator className="my-2" />
 					<ul className="grid gap-3">
-						{/* <li className="flex items-center justify-between"> */}
-						{/* 	<span className="text-muted-foreground"> */}
-						{/* 		Subtotal */}
-						{/* 	</span> */}
-						{/* 	<span>$299.00</span> */}
-						{/* </li> */}
-						{/* <li className="flex items-center justify-between"> */}
-						{/* 	<span className="text-muted-foreground"> */}
-						{/* 		Shipping */}
-						{/* 	</span> */}
-						{/* 	<span>$5.00</span> */}
-						{/* </li> */}
-						{/* <li className="flex items-center justify-between"> */}
-						{/* 	<span className="text-muted-foreground">Tax</span> */}
-						{/* 	<span>$25.00</span> */}
-						{/* </li> */}
+						<li className="flex items-center justify-between">
+							<span className="text-muted-foreground">
+								Subtotal
+							</span>
+							<span>{formatCurrency(props.subTotal)}</span>
+						</li>
+						<li className="flex items-center justify-between">
+							<span className="text-muted-foreground">
+								Processing Fee (3%)
+							</span>
+							<span>
+								{formatCurrency(props.processingFeeAmount)}
+							</span>
+						</li>
 						<li className="flex items-center justify-between font-semibold">
 							<span className="text-muted-foreground">Total</span>
-							<span>
-								{props.paidAmount
-									? formatCurrency(props.paidAmount)
-									: "-"}
-							</span>
+							<span>{formatCurrency(props.paidAmount)}</span>
 						</li>
 					</ul>
 				</div>

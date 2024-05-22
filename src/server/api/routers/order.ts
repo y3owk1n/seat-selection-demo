@@ -34,6 +34,11 @@ export const orderRouter = createTRPCRouter({
 				return null;
 			}
 
+			const subTotal = order.seat.reduce(
+				(acc, seat) => acc + seat.price,
+				0,
+			);
+
 			const formattedOrder = {
 				orderId: order.id,
 				seats: order.seat.map((seat) => ({
@@ -45,6 +50,8 @@ export const orderRouter = createTRPCRouter({
 				paidAt: order.createdAt,
 				updatedAt: order.updatedAt,
 				paidAmount: order.paidAmount,
+				subTotal,
+				processingFeeAmount: order.processingFeeAmount,
 			};
 
 			return formattedOrder;
