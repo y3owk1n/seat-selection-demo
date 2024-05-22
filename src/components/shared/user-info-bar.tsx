@@ -26,15 +26,15 @@ export default function UserInfoBar(props: UserInfoBarProps): JSX.Element {
 					</Avatar>
 
 					<span>
-						Hello!{" "}
-						<Button asChild variant="link" className="p-0">
+						👋{" "}
+						<Button asChild variant="link" size="link">
 							<Link href="/update-profile">
 								{props.session.user.name}
 							</Link>
 						</Button>
 					</span>
 					<span className="mx-2">|</span>
-					<Button asChild variant="link" className="p-0">
+					<Button asChild variant="link" size="link">
 						<Link href="/order">View orders</Link>
 					</Button>
 				</div>
