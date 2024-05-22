@@ -20,6 +20,11 @@ enum SeatStatus {
     TEMP_OCCUPIED
 }
 
+enum Role {
+    ADMIN
+    USER
+}
+
 model Seat {
     id             String     @id @default(cuid())
     label          String
@@ -92,6 +97,7 @@ model User {
     image         String?
     fullName      String?
     phone         String?
+    role          Role      @default(USER)
     accounts      Account[]
     sessions      Session[]
     lockedSeat    Seat[]
