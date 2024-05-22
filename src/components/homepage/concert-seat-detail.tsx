@@ -95,6 +95,7 @@ export default function ConcertSeatDetail(
 
 	const seatSelection = useSeatSelection(seats, props.myLockedSeats);
 	const zoom = useZoom({});
+
 	const router = useRouter();
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -142,9 +143,15 @@ export default function ConcertSeatDetail(
 			if (res.canCheckOut) {
 				await redirectToCheckout(filteredSuccess.map((r) => r.seatId));
 				return;
+			} else {
+				toast.error("Data is not up to date", {
+					description:
+						"Some seats are not available anymore. The page has automatically refresh to get the latest data.",
+				});
+				router.refresh();
 			}
 
-			router.refresh();
+			// router.refresh();
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
@@ -264,21 +271,30 @@ export default function ConcertSeatDetail(
 					</p>
 				</div>
 				{session ? (
-					<Button
-						type="button"
-						variant="secondary"
-						disabled={
-							isSubmitting ||
-							!seatSelection.selectedSeat.length ||
-							seatSelection.selectionErrorIds.length > 0
-						}
-						onClick={() => void submitSelectSeat()}
-						isLoading={isSubmitting}
-					>
-						{seatSelection.selectionErrorIds.length > 0
-							? "Fix Error To Continue"
-							: "Pay Now"}
-					</Button>
+					<div className="grid gap-1">
+						<Button
+							type="button"
+							variant="secondary"
+							disabled={
+								isSubmitting ||
+								!seatSelection.selectedSeat.length ||
+								seatSelection.selectionErrorIds.length > 0
+							}
+							onClick={() => void submitSelectSeat()}
+							isLoading={isSubmitting}
+						>
+							Pay Now
+						</Button>
+						<Button
+							className="text-secondary text-xs"
+							type="button"
+							variant="link"
+							size="link"
+							onClick={() => router.refresh()}
+						>
+							Refresh Seats
+						</Button>
+					</div>
 				) : (
 					<ResponsiveDialogDrawer
 						title="Sign In"

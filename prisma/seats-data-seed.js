@@ -802,7 +802,7 @@ export const seats = [
 	{
 		label: "K24",
 		column: 2,
-		row: 11,
+		row: 10,
 		indexFromLeft: 13,
 		status: "EMPTY",
 		price: 128,
