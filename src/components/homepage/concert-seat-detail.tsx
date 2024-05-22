@@ -64,10 +64,10 @@ function SeatItem({
 				"relative ring aria-[disabled=true]:pointer-events-none aria-[disabled=true]:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
 				!selected && "aria-[disabled=true]:fill-primary",
 				seat.price === 88
-					? "fill-violet-500 hover:fill-violet-500/90"
+					? "fill-yellow-500 hover:fill-yellow-500/90"
 					: "",
 				seat.price === 128
-					? "fill-yellow-500 hover:fill-yellow-500/90"
+					? "fill-pink-500 hover:fill-pink-500/90"
 					: "",
 				selected ? "fill-primary hover:fill-primary/90" : "",
 				isMyLockedSeat && isLocked ? "fill-orange-500" : "",
