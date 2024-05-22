@@ -27,6 +27,7 @@ import { ResponsiveDialogDrawer } from "../shared/responsive-dialog-drawer";
 
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import { useRouter } from "next/navigation";
 
 dayjs.extend(timezone);
 dayjs.extend(utc);
@@ -94,6 +95,7 @@ export default function ConcertSeatDetail(
 
 	const seatSelection = useSeatSelection(seats, props.myLockedSeats);
 	const zoom = useZoom({});
+	const router = useRouter();
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -116,9 +118,9 @@ export default function ConcertSeatDetail(
 		try {
 			const res = await selectSeat.mutateAsync({ selectedSeatsIds });
 
-			const filteredErrors = res.filter((r) => !r.success);
+			const filteredErrors = res.detail.filter((r) => !r.success);
 
-			const filteredSuccess = res.filter((r) => r.success);
+			const filteredSuccess = res.detail.filter((r) => r.success);
 
 			if (filteredErrors.length) {
 				seatSelection.setSelectionErrorIds(
@@ -137,9 +139,12 @@ export default function ConcertSeatDetail(
 				filteredSuccess.map((r) => r.seatId),
 			);
 
-			if (filteredSuccess.length) {
+			if (res.canCheckOut) {
 				await redirectToCheckout(filteredSuccess.map((r) => r.seatId));
+				return;
 			}
+
+			router.refresh();
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
@@ -147,7 +152,7 @@ export default function ConcertSeatDetail(
 		} finally {
 			setIsSubmitting(false);
 		}
-	}, [seatSelection, selectSeat]);
+	}, [router, seatSelection, selectSeat]);
 
 	async function redirectToCheckout(seatsIds: string[]) {
 		try {
@@ -263,12 +268,16 @@ export default function ConcertSeatDetail(
 						type="button"
 						variant="secondary"
 						disabled={
-							isSubmitting || !seatSelection.selectedSeat.length
+							isSubmitting ||
+							!seatSelection.selectedSeat.length ||
+							seatSelection.selectionErrorIds.length > 0
 						}
 						onClick={() => void submitSelectSeat()}
 						isLoading={isSubmitting}
 					>
-						Next
+						{seatSelection.selectionErrorIds.length > 0
+							? "Fix Error To Continue"
+							: "Pay Now"}
 					</Button>
 				) : (
 					<ResponsiveDialogDrawer
