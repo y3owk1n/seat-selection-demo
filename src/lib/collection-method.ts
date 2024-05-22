@@ -15,3 +15,7 @@ export const collectionMethodMap: CollectionMethod[] = [
 		value: "event",
 	},
 ];
+
+export function getCollectionLabelByValue(value: string) {
+	return collectionMethodMap.find((method) => method.value === value)?.label;
+}
