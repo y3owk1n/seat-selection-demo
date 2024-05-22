@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 
 import { env } from "@/env";
+import { collectionMethodKey } from "@/lib/collection-method";
 import type Stripe from "stripe";
 
 async function fulfilOrder({
@@ -31,6 +32,12 @@ async function fulfilOrder({
 
 	const userId = session.metadata?.user_id;
 
+	const collectionMethod = session.custom_fields.find(
+		(item) => item.key === collectionMethodKey,
+	);
+
+	const collectionMethodValue = collectionMethod?.dropdown?.value;
+
 	if (!paidSeatIds.length) {
 		return NextResponse.json(
 			{ error: "Paid seats is less than 1, weird!" },
@@ -50,6 +57,20 @@ async function fulfilOrder({
 	}
 
 	await db.$transaction(async (tx) => {
+		const seats = await tx.seat.aggregate({
+			where: {
+				id: {
+					in: paidSeatIds,
+				},
+			},
+			_sum: {
+				price: true,
+			},
+		});
+		const totalSeatsAmount = seats._sum.price ?? 0;
+		const paidAmount = latestCharge!.amount / 100;
+		const processingFeeAmount = paidAmount - totalSeatsAmount;
+
 		await tx.order.create({
 			data: {
 				checkoutSessionId: session.id,
@@ -57,9 +78,11 @@ async function fulfilOrder({
 				seat: {
 					connect: paidSeatIds.map((seatId) => ({ id: seatId })),
 				},
+				collectionMethod: collectionMethodValue ?? "event",
 				receiptUrl: latestCharge?.receipt_url,
 				paymentMethod: "stripe",
-				paidAmount: latestCharge!.amount / 100,
+				paidAmount,
+				processingFeeAmount,
 			},
 		});
 

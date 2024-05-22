@@ -42,16 +42,18 @@ model Seat {
 }
 
 model Order {
-    id                String   @id @default(cuid())
-    checkoutSessionId String?
-    userId            String
-    user              User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-    seat              Seat[]
-    receiptUrl        String?
-    paidAmount        Float?
-    paymentMethod     String?
-    createdAt         DateTime @default(now()) @db.Timestamptz(3)
-    updatedAt         DateTime @updatedAt @db.Timestamptz(3)
+    id                  String   @id @default(cuid())
+    checkoutSessionId   String?
+    userId              String
+    user                User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+    seat                Seat[]
+    receiptUrl          String?
+    collectionMethod    String
+    paidAmount          Float
+    processingFeeAmount Float
+    paymentMethod       String?
+    createdAt           DateTime @default(now()) @db.Timestamptz(3)
+    updatedAt           DateTime @updatedAt @db.Timestamptz(3)
 }
 
 // Necessary for Next auth
