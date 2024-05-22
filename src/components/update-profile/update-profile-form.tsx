@@ -3,6 +3,8 @@ import { updateProfileSchema } from "@/lib/schema";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TRPCClientError } from "@trpc/client";
+import { type Session } from "next-auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -18,8 +20,6 @@ import {
 	FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { type Session } from "next-auth";
-import Link from "next/link";
 
 const formSchema = updateProfileSchema;
 
