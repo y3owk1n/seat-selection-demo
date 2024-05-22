@@ -5,6 +5,16 @@
 await import("./src/env.js");
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+	async redirects() {
+		return [
+			{
+				source: "/admin",
+				destination: "/admin/analytics",
+				permanent: true,
+			},
+		];
+	},
+};
 
 export default nextConfig;
