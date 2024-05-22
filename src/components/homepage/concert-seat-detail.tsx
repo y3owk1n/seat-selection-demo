@@ -61,12 +61,15 @@ function SeatItem({
 			}
 			className={cn(
 				"relative ring aria-[disabled=true]:pointer-events-none aria-[disabled=true]:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-				!selected &&
-					"aria-[disabled=true]:fill-red-500 aria-[disabled=true]:stroke-white-500",
-				selected ? "fill-primary hover:fill-primary/90" : "",
-				isMyLockedSeat && isLocked
-					? "fill-orange-500 stroke-white-500"
+				!selected && "aria-[disabled=true]:fill-primary",
+				seat.price === 88
+					? "fill-violet-500 hover:fill-violet-500/90"
 					: "",
+				seat.price === 128
+					? "fill-yellow-500 hover:fill-yellow-500/90"
+					: "",
+				selected ? "fill-primary hover:fill-primary/90" : "",
+				isMyLockedSeat && isLocked ? "fill-orange-500" : "",
 				seatSelection.selectionErrorIds.includes(seat.id)
 					? "stroke-red-500 stroke-2 hover:stroke-red-500"
 					: "",
