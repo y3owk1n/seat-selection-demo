@@ -8,6 +8,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { getCollectionLabelByValue } from "@/lib/collection-method";
 import { formatCurrency } from "@/lib/formatter";
 import { type User } from "@prisma/client";
 import dayjs from "dayjs";
@@ -25,6 +26,7 @@ interface OrderDetailCardProps {
 	checkoutSessionId: string | null;
 	receiptUrl: string | null;
 	processingFeeAmount: number;
+	collectionMethod: string;
 	user: User | null;
 }
 
@@ -38,6 +40,10 @@ export default function OrderDetailCard(props: OrderDetailCardProps) {
 					</CardTitle>
 					<CardDescription>
 						Date: {dayjs(props.paidAt).format("MMMM DD, YYYY")}
+					</CardDescription>
+					<CardDescription>
+						Collection Method:{" "}
+						{getCollectionLabelByValue(props.collectionMethod)}
 					</CardDescription>
 
 					<div>

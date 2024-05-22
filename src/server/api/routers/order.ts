@@ -52,6 +52,7 @@ export const orderRouter = createTRPCRouter({
 				paidAmount: order.paidAmount,
 				subTotal,
 				processingFeeAmount: order.processingFeeAmount,
+				collectionMethod: order.collectionMethod,
 			};
 
 			return formattedOrder;
