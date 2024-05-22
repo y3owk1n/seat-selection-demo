@@ -48,7 +48,10 @@ export default async function ThankYou({
 					. Contact us if you have any questions.
 				</p>
 			</div>
-			<div>
+			<div className="flex gap-4">
+				<Button variant="outline" type="button" asChild>
+					<Link href="/">Back To Home</Link>
+				</Button>
 				<Button asChild>
 					<Link href="/order">View all orders</Link>
 				</Button>
