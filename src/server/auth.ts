@@ -6,6 +6,7 @@ import {
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
+import { type User as PrismaUser } from "@prisma/client";
 
 import { env } from "@/env";
 import { db } from "@/server/db";
@@ -21,8 +22,9 @@ declare module "next-auth" {
 		user: {
 			id: string;
 			// ...other properties
-			phone: string | null | undefined;
-			fullName: string | null | undefined;
+			phone: PrismaUser["phone"];
+			fullName: PrismaUser["fullName"];
+			role: PrismaUser["role"];
 		} & DefaultSession["user"];
 	}
 
