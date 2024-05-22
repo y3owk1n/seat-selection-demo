@@ -21,7 +21,12 @@ export const seatRouter = createTRPCRouter({
 
 		const formattedSeats: Seat[] = seats.map((seat) => ({
 			...seat,
-			status: getSeatStatus(seat.status, seat.lockedTill),
+			status: getSeatStatus(
+				seat.status,
+				seat.lockedTill,
+				seat.lockedByUserId,
+				ctx.session?.user.id,
+			),
 		}));
 
 		return formattedSeats;
@@ -48,7 +53,12 @@ export const seatRouter = createTRPCRouter({
 
 			const formattedSeats: Seat[] = allSeats.map((seat) => ({
 				...seat,
-				status: getSeatStatus(seat.status, seat.lockedTill),
+				status: getSeatStatus(
+					seat.status,
+					seat.lockedTill,
+					seat.lockedByUserId,
+					ctx.session?.user.id,
+				),
 			}));
 
 			const res = pickSeats(formattedSeats, input.selectedSeatsIds);
@@ -87,6 +97,16 @@ export const seatRouter = createTRPCRouter({
 			);
 
 			/**
+			 * Get all selectedSeats that is locked expired
+			 */
+			const selectedSeatsWithLockedUserButExpired = selectedSeats.filter(
+				(seat) =>
+					seat.lockedByUserId !== null &&
+					seat.lockedTill &&
+					seat.lockedTill < new Date(),
+			);
+
+			/**
 			 * Check if all selected seats are success (seat logic only)
 			 */
 			const validatedFilteredSuccess =
@@ -94,7 +114,8 @@ export const seatRouter = createTRPCRouter({
 
 			const allSelectedSeatsLength =
 				selectedSeatsWithMe.length +
-				selectedSeatsWithNoLockedUser.length;
+				selectedSeatsWithNoLockedUser.length +
+				selectedSeatsWithLockedUserButExpired.length;
 
 			/**
 			 * Check if all selected seats are success (its mine and not locked)

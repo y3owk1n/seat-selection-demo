@@ -98,7 +98,9 @@ function getCurrentSeat(seat: Seat[], seatId: string): Seat | undefined {
  * @returns An array of Seat objects belonging to the specified section.
  */
 function getCurrentSection(seat: Seat[], column: number, row: number): Seat[] {
-	return seat.filter((_seat) => _seat.column === column && _seat.row === row);
+	return seat
+		.filter((_seat) => _seat.column === column && _seat.row === row)
+		.sort((a, b) => a.indexFromLeft - b.indexFromLeft);
 }
 
 /**
@@ -310,13 +312,17 @@ export interface PickSeatRes {
 export function getSeatStatus(
 	currentStatus: Seat["status"],
 	lockedTill: Date | null,
+	lockedBy: string | null,
+	currentUserId?: string | null,
 ): Seat["status"] {
 	if (
 		currentStatus !== "OCCUPIED" &&
 		lockedTill &&
-		lockedTill > dayjs().tz(timezoneKL).toDate()
-	)
+		lockedTill > dayjs().tz(timezoneKL).toDate() &&
+		lockedBy !== currentUserId
+	) {
 		return "OCCUPIED";
+	}
 
 	return currentStatus;
 }
