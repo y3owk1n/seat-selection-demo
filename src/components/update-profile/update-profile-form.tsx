@@ -3,6 +3,8 @@ import { updateProfileSchema } from "@/lib/schema";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TRPCClientError } from "@trpc/client";
+import { type Session } from "next-auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -22,10 +24,10 @@ import { Input } from "../ui/input";
 const formSchema = updateProfileSchema;
 
 interface UpdateProfileFormProps {
-	name?: string | null | undefined;
-	fullName?: string | null | undefined;
-	email?: string | null | undefined;
-	phone?: string | null | undefined;
+	name?: Session["user"]["name"];
+	fullName: Session["user"]["fullName"];
+	email?: Session["user"]["email"];
+	phone: Session["user"]["phone"];
 }
 
 export default function UpdateProfileForm(props: UpdateProfileFormProps) {

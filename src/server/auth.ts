@@ -21,8 +21,8 @@ declare module "next-auth" {
 		user: {
 			id: string;
 			// ...other properties
-			phone: string;
-			fullName: string;
+			phone: string | null | undefined;
+			fullName: string | null | undefined;
 		} & DefaultSession["user"];
 	}
 
