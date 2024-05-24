@@ -2,10 +2,22 @@ import OrderList from "@/components/admin/order/order-list";
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import AdminNav from "@/components/shared/admin-nav";
 import UserInfoBar from "@/components/shared/user-info-bar";
+import { siteConfig } from "@/lib/config";
 import { PAGE_SIZE } from "@/lib/constants";
+import { generateCustomMetadata } from "@/lib/utils";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { notFound } from "next/navigation";
+
+const title = "Orders - Admin";
+const slug = "/admin/order";
+
+export const metadata = generateCustomMetadata({
+	mainTitle: title,
+	maybeSeoTitle: title,
+	maybeSeoDescription: siteConfig.description,
+	slug,
+});
 
 interface OrdersProps {
 	searchParams?: Record<string, string | string[] | undefined>;

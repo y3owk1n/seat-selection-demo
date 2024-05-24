@@ -6,8 +6,20 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import UpdateProfileForm from "@/components/update-profile/update-profile-form";
+import { siteConfig } from "@/lib/config";
+import { generateCustomMetadata } from "@/lib/utils";
 import { getServerAuthSession } from "@/server/auth";
 import { notFound } from "next/navigation";
+
+const title = "Update Profile";
+const slug = "/update-profile";
+
+export const metadata = generateCustomMetadata({
+	mainTitle: title,
+	maybeSeoTitle: title,
+	maybeSeoDescription: siteConfig.description,
+	slug,
+});
 
 export default async function UpdateProfile(): Promise<JSX.Element> {
 	const session = await getServerAuthSession();

@@ -2,9 +2,21 @@ import { ModeToggle } from "@/components/dark-mode-toggle";
 import UserInfoBar from "@/components/shared/user-info-bar";
 import { Button } from "@/components/ui/button";
 import { getSessionAndCheckRedirect } from "@/lib/auth";
+import { siteConfig } from "@/lib/config";
+import { generateCustomMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+const title = "Thank You";
+const slug = "/thank-you";
+
+export const metadata = generateCustomMetadata({
+	mainTitle: title,
+	maybeSeoTitle: title,
+	maybeSeoDescription: siteConfig.description,
+	slug,
+});
 
 export default async function ThankYou({
 	searchParams,

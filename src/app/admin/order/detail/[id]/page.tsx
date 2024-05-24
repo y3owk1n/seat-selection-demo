@@ -3,11 +3,50 @@ import { ModeToggle } from "@/components/dark-mode-toggle";
 import AdminNav from "@/components/shared/admin-nav";
 import UserInfoBar from "@/components/shared/user-info-bar";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/lib/config";
+import { generateCustomMetadata } from "@/lib/utils";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { ArrowLeft } from "lucide-react";
+import { type Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+	params,
+}: {
+	params: { id: string };
+}): Promise<Metadata> {
+	const session = await getServerAuthSession();
+
+	if (
+		!session ||
+		!session.user ||
+		typeof params.id !== "string" ||
+		session.user.role !== "ADMIN"
+	) {
+		return {};
+	}
+
+	const order = await api.admin.order.orderByOrderId({
+		orderId: params.id,
+	});
+
+	if (!order) {
+		return {};
+	}
+
+	const title = "Order Details - Admin";
+	const slug = `/admin/order/detail/${params.id}`;
+
+	const metadata = generateCustomMetadata({
+		mainTitle: title,
+		maybeSeoTitle: title,
+		maybeSeoDescription: siteConfig.description,
+		slug,
+	});
+	return metadata;
+}
 
 interface OrderDetailProps {
 	params: {
