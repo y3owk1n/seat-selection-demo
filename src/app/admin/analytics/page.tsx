@@ -7,10 +7,22 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { siteConfig } from "@/lib/config";
 import { formatCurrency } from "@/lib/formatter";
+import { generateCustomMetadata } from "@/lib/utils";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { notFound } from "next/navigation";
+
+const title = "Analytics - Admin";
+const slug = "/admin/analytics";
+
+export const metadata = generateCustomMetadata({
+	mainTitle: title,
+	maybeSeoTitle: title,
+	maybeSeoDescription: siteConfig.description,
+	slug,
+});
 
 export default async function Orders(): Promise<JSX.Element> {
 	const session = await getServerAuthSession();

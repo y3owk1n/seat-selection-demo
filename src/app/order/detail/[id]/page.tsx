@@ -3,10 +3,42 @@ import OrderDetailCard from "@/components/order/order-detail-card";
 import UserInfoBar from "@/components/shared/user-info-bar";
 import { Button } from "@/components/ui/button";
 import { getSessionAndCheckRedirect } from "@/lib/auth";
+import { siteConfig } from "@/lib/config";
+import { generateCustomMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { ArrowLeft } from "lucide-react";
+import { type Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+	params,
+}: {
+	params: { id: string };
+}): Promise<Metadata> {
+	const session = await getSessionAndCheckRedirect();
+
+	if (!session || !session.user || typeof params.id !== "string") {
+		return {};
+	}
+
+	const order = await api.order.orderByOrderId({ orderId: params.id });
+
+	if (!order) {
+		return {};
+	}
+
+	const title = "Order Details";
+	const slug = `/order/detail/${params.id}`;
+
+	const metadata = generateCustomMetadata({
+		mainTitle: title,
+		maybeSeoTitle: title,
+		maybeSeoDescription: siteConfig.description,
+		slug,
+	});
+	return metadata;
+}
 
 interface OrderDetailProps {
 	params: {

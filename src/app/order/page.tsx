@@ -3,10 +3,22 @@ import OrderList from "@/components/order/order-list";
 import UserInfoBar from "@/components/shared/user-info-bar";
 import { Button } from "@/components/ui/button";
 import { getSessionAndCheckRedirect } from "@/lib/auth";
+import { siteConfig } from "@/lib/config";
+import { generateCustomMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+const title = "Orders";
+const slug = "/order";
+
+export const metadata = generateCustomMetadata({
+	mainTitle: title,
+	maybeSeoTitle: title,
+	maybeSeoDescription: siteConfig.description,
+	slug,
+});
 
 export default async function Orders(): Promise<JSX.Element> {
 	const session = await getSessionAndCheckRedirect();

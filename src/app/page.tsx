@@ -3,8 +3,20 @@ import ConcertSeatDetail from "@/components/homepage/concert-seat-detail";
 import UserInfoBar from "@/components/shared/user-info-bar";
 import { Separator } from "@/components/ui/separator";
 import { getSessionAndCheckRedirect } from "@/lib/auth";
+import { siteConfig } from "@/lib/config";
+import { generateCustomMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { Calendar, Pin } from "lucide-react";
+
+const title = `Home - ${siteConfig.name} - MDA Concert`;
+const slug = "/";
+
+export const metadata = generateCustomMetadata({
+	mainTitle: title,
+	maybeSeoTitle: title,
+	maybeSeoDescription: siteConfig.description,
+	slug,
+});
 
 export default async function Home(): Promise<JSX.Element> {
 	const seats = await api.seat.seats();
