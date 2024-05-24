@@ -10,7 +10,7 @@
 		"postinstall": "pnpm db:generate",
 		"dev": "next dev --port 3011",
 		"start": "next start",
-		"build": "next build",
+		"build": "pnpm db:deploy && next build",
 		"lint": "next lint",
 		"typecheck": "tsc --noEmit",
 		"format": "biome check --apply . && biome format --write .",
