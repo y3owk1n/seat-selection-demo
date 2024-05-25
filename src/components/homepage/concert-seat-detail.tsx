@@ -20,10 +20,12 @@ import { loadStripe } from "@stripe/stripe-js";
 import dayjs from "dayjs";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import { type Session } from "next-auth";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
 import { LoginForm } from "../shared/login";
 import { ResponsiveDialogDrawer } from "../shared/responsive-dialog-drawer";
+
+import { motion, useInView } from "framer-motion";
 
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
@@ -92,6 +94,9 @@ export default function ConcertSeatDetail(
 	props: ConcertSeatDetailProps,
 ): JSX.Element {
 	const { seats, session } = props;
+
+	const ref = useRef<HTMLDivElement>(null);
+	const isInView = useInView(ref);
 
 	const seatSelection = useSeatSelection(seats, props.myLockedSeats);
 	const zoom = useZoom({});
@@ -196,7 +201,7 @@ export default function ConcertSeatDetail(
 
 	return (
 		<>
-			<div className="w-full items-center flex flex-col gap-8">
+			<div ref={ref} className="w-full items-center flex flex-col gap-8">
 				<ButtonGroup>
 					<Button
 						variant="outline"
@@ -247,65 +252,79 @@ export default function ConcertSeatDetail(
 				</ScrollArea>
 			</div>
 
-			<div className="fixed md:max-w-4xl w-full justify-between items-center md:rounded-md flex gap-4 bg-primary text-primary-foreground p-4 border bottom-0 md:bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-				<div className="space-y-1">
-					<div className="inline-flex gap-1 items-center flex-wrap">
-						<p className="text-sm font-medium leading-none">
-							Selected Seats:{" "}
-						</p>
+			<motion.div
+				style={{
+					transform: isInView ? "none" : "translateY(200px)",
+					opacity: isInView ? 1 : 0,
+					transition: "all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1)",
+				}}
+				className="fixed bottom-0 md:bottom-8 z-10 w-full left-0"
+			>
+				<div className="md:max-w-4xl mx-auto w-full justify-between items-center md:rounded-md flex gap-4 bg-primary text-primary-foreground p-4 border">
+					<div className="space-y-1">
+						<div className="inline-flex gap-1 items-center flex-wrap">
+							<p className="text-sm font-medium leading-none">
+								Selected Seats:{" "}
+							</p>
 
-						<div className="inline-flex gap-1 flex-wrap">
-							{seatSelection.selectedSeat
-								.sort((a, b) => a.label.localeCompare(b.label))
-								.map((seat) => (
-									<Badge variant="secondary" key={seat.id}>
-										{seat.label}
-									</Badge>
-								))}
+							<div className="inline-flex gap-1 flex-wrap">
+								{seatSelection.selectedSeat
+									.sort((a, b) =>
+										a.label.localeCompare(b.label),
+									)
+									.map((seat) => (
+										<Badge
+											variant="secondary"
+											key={seat.id}
+										>
+											{seat.label}
+										</Badge>
+									))}
+							</div>
 						</div>
+						<p className="text-sm text-primary-foreground/80">
+							Total Amount:{" "}
+							{formatCurrency(seatSelection.totalAmountForSeats)}{" "}
+							for {seatSelection.selectedSeat.length} tickets
+						</p>
 					</div>
-					<p className="text-sm text-primary-foreground/80">
-						Total Amount:{" "}
-						{formatCurrency(seatSelection.totalAmountForSeats)} for{" "}
-						{seatSelection.selectedSeat.length} tickets
-					</p>
+					{session ? (
+						<div className="grid gap-1">
+							<Button
+								type="button"
+								variant="secondary"
+								disabled={
+									isSubmitting ||
+									!seatSelection.selectedSeat.length ||
+									seatSelection.selectionErrorIds.length > 0
+								}
+								onClick={() => void submitSelectSeat()}
+								isLoading={isSubmitting}
+							>
+								Pay Now
+							</Button>
+							<Button
+								className="text-secondary text-xs"
+								type="button"
+								variant="link"
+								size="link"
+								onClick={() => router.refresh()}
+							>
+								Refresh Seats
+							</Button>
+						</div>
+					) : (
+						<ResponsiveDialogDrawer
+							title="Sign In"
+							description="Use the following method to sign in"
+							buttonText="Login to continue"
+							buttonStyle="secondary"
+						>
+							<LoginForm />
+						</ResponsiveDialogDrawer>
+					)}
 				</div>
-				{session ? (
-					<div className="grid gap-1">
-						<Button
-							type="button"
-							variant="secondary"
-							disabled={
-								isSubmitting ||
-								!seatSelection.selectedSeat.length ||
-								seatSelection.selectionErrorIds.length > 0
-							}
-							onClick={() => void submitSelectSeat()}
-							isLoading={isSubmitting}
-						>
-							Pay Now
-						</Button>
-						<Button
-							className="text-secondary text-xs"
-							type="button"
-							variant="link"
-							size="link"
-							onClick={() => router.refresh()}
-						>
-							Refresh Seats
-						</Button>
-					</div>
-				) : (
-					<ResponsiveDialogDrawer
-						title="Sign In"
-						description="Use the following method to sign in"
-						buttonText="Login to continue"
-						buttonStyle="secondary"
-					>
-						<LoginForm />
-					</ResponsiveDialogDrawer>
-				)}
-			</div>
+			</motion.div>
 		</>
 	);
 }

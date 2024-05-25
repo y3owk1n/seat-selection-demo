@@ -2,12 +2,14 @@ import { ModeToggle } from "@/components/dark-mode-toggle";
 import ConcertSeatDetail from "@/components/homepage/concert-seat-detail";
 import Videos from "@/components/homepage/videos";
 import UserInfoBar from "@/components/shared/user-info-bar";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { getSessionAndCheckRedirect } from "@/lib/auth";
 import { siteConfig } from "@/lib/config";
 import { generateCustomMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
-import { Calendar, Pin } from "lucide-react";
+import { Calendar, Pin, Ticket } from "lucide-react";
+import Link from "next/link";
 
 const title = `Home - ${siteConfig.name}`;
 const slug = "/";
@@ -59,6 +61,15 @@ export default async function Home(): Promise<JSX.Element> {
 					</li>
 				</ul>
 
+				<div>
+					<Button asChild>
+						<Link href="#select-seats">
+							<Ticket className="size-4 mr-2" />
+							Select Your Seat(s)
+						</Link>
+					</Button>
+				</div>
+
 				<div className="my-8 grid gap-4">
 					<h2 className="flex-1 scroll-m-20 text-xl font-extrabold tracking-tight">
 						Amazing Videos For UDC
@@ -70,7 +81,10 @@ export default async function Home(): Promise<JSX.Element> {
 			</div>
 
 			<div className="grid gap-4">
-				<h2 className="flex-1 scroll-m-20 text-xl font-extrabold tracking-tight">
+				<h2
+					id="select-seats"
+					className="flex-1 scroll-m-20 text-xl font-extrabold tracking-tight"
+				>
 					Select Your Tickets Here
 				</h2>
 
