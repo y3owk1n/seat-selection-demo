@@ -33,7 +33,7 @@ export default function Videos() {
 				<TabsContent
 					key={video.key}
 					value={video.key}
-					className="bg-gray-900 rounded-md aspect-video w-full h-full"
+					className="bg-gray-900 rounded-md aspect-video"
 				>
 					<YouTubePlayer videoId={video.videoId} />
 				</TabsContent>
