@@ -8,7 +8,7 @@ import { generateCustomMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { Calendar, Pin } from "lucide-react";
 
-const title = `Home - ${siteConfig.name} - MDA Concert`;
+const title = `Home - ${siteConfig.name}`;
 const slug = "/";
 
 export const metadata = generateCustomMetadata({
@@ -30,23 +30,31 @@ export default async function Home(): Promise<JSX.Element> {
 			<UserInfoBar session={session} />
 			<div className="flex gap-4">
 				<h1 className="flex-1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-					Dance Concert 2024
+					United Dance Concert: The Twenty Four
 				</h1>
 				<ModeToggle />
 			</div>
 			<div className="grid gap-4">
 				<p className="text-sm text-muted-foreground">
-					Lorem ipsum dolor sit amet, qui minim labore adipisicing
-					minim sint cillum sint consectetur cupidatat.
+					United Dance Concert is Malaysia’s first live street dance
+					showcase made possible by local academy talents. It’s first
+					live show in 2017 was targeted to provide a platform for
+					academy students to showcase their technical & showmanship
+					skills on stage. In 2018, it was rebranded to cater a live
+					show to the general public with relatable intricate
+					storylines expressed in movements. Join us as we venture
+					into a whole new experience of ‘The Twenty Four’.
 				</p>
 				<ul className="flex gap-4 flex-wrap">
 					<li className="inline-flex gap-2 items-center">
 						<Pin className="w-5 h-5" />
-						<span className="text-sm">Amazing Place</span>
+						<span className="text-sm">
+							(KLPAC) Kuala Lumpur Performing Arts Centre
+						</span>
 					</li>
 					<li className="inline-flex gap-2 items-center">
 						<Calendar className="w-5 h-5" />
-						<span className="text-sm">24 July, 2024</span>
+						<span className="text-sm">30th June 2024, 6:00pm</span>
 					</li>
 				</ul>
 
