@@ -94,12 +94,12 @@ export default async function Home(): Promise<JSX.Element> {
 
 				<ul className="flex gap-4 flex-wrap">
 					<li className="inline-flex gap-2 items-center">
-						<div className="size-4 rounded-full bg-yellow-500 border-2 border-primary" />
-						<span className="text-sm">RM 88 (Tier 1)</span>
+						<div className="size-4 rounded-full bg-pink-500 border-2 border-primary" />
+						<span className="text-sm">RM 128 (Tier 1)</span>
 					</li>
 					<li className="inline-flex gap-2 items-center">
-						<div className="size-4 rounded-full bg-pink-500 border-2 border-primary" />
-						<span className="text-sm">RM 128 (Tier 2)</span>
+						<div className="size-4 rounded-full bg-yellow-500 border-2 border-primary" />
+						<span className="text-sm">RM 88 (Tier 2)</span>
 					</li>
 					<li className="inline-flex gap-2 items-center">
 						<div className="size-4 rounded-full opacity-50 bg-primary border-2 border-primary" />
