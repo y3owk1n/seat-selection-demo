@@ -54,19 +54,19 @@ export const metadata: Metadata = {
 		description: siteConfig.description,
 		images: [siteConfig.ogImage],
 	},
-	// icons: {
-	// 	other: [
-	// 		{
-	// 			rel: "mask-icon",
-	// 			url: "/safari-pinned-tab.svg",
-	// 			color: "#274b50",
-	// 		},
-	// 	],
-	// },
+	icons: {
+		other: [
+			{
+				rel: "mask-icon",
+				url: "/safari-pinned-tab.svg",
+				color: "#5bbad5",
+			},
+		],
+	},
 	alternates: {
 		canonical: getBaseUrl(siteConfig.url),
 	},
-	// manifest: "/site.webmanifest",
+	manifest: "/site.webmanifest",
 	formatDetection: {
 		email: false,
 		address: false,
