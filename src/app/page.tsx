@@ -1,5 +1,6 @@
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import ConcertSeatDetail from "@/components/homepage/concert-seat-detail";
+import Videos from "@/components/homepage/videos";
 import UserInfoBar from "@/components/shared/user-info-bar";
 import { Separator } from "@/components/ui/separator";
 import { getSessionAndCheckRedirect } from "@/lib/auth";
@@ -57,6 +58,13 @@ export default async function Home(): Promise<JSX.Element> {
 						<span className="text-sm">30th June 2024, 6:00pm</span>
 					</li>
 				</ul>
+
+				<div className="my-8 grid gap-4">
+					<h2 className="flex-1 scroll-m-20 text-xl font-extrabold tracking-tight">
+						Amazing Videos For UDC
+					</h2>
+					<Videos />
+				</div>
 
 				<Separator />
 			</div>
