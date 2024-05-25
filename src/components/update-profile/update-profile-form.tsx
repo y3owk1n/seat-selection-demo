@@ -46,7 +46,11 @@ export default function UpdateProfileForm(props: UpdateProfileFormProps) {
 
 	function useNameAsFullName() {
 		if (props.name) {
-			form.setValue("fullName", props.name);
+			form.setValue("fullName", props.name, {
+				shouldDirty: true,
+				shouldTouch: true,
+				shouldValidate: true,
+			});
 		}
 	}
 
@@ -96,6 +100,7 @@ export default function UpdateProfileForm(props: UpdateProfileFormProps) {
 									{props.name && (
 										<FormDescription>
 											<Button
+												type="button"
 												variant="link"
 												size="link"
 												className="ml-1 text-xs"
@@ -159,7 +164,9 @@ export default function UpdateProfileForm(props: UpdateProfileFormProps) {
 					</div>
 					<Button
 						disabled={
-							updateProfile.isPending || !form.formState.isDirty
+							updateProfile.isPending ||
+							!form.formState.isDirty ||
+							!form.formState.isValid
 						}
 						isLoading={updateProfile.isPending}
 						type="submit"
