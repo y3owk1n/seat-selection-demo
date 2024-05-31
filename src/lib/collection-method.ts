@@ -7,7 +7,7 @@ export const collectionMethodKey = "collectionMethod";
 
 export const collectionMethodMap: CollectionMethod[] = [
 	{
-		label: "Collect ticket from studio",
+		label: "Collect ticket from studio (Collection after 15th June)",
 		value: "studio",
 	},
 	{
