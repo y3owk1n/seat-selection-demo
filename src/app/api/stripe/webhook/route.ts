@@ -17,88 +17,81 @@ async function fulfilOrder({
 	const forPlatform = session.metadata?.for;
 	const entity = session.metadata?.entity;
 
-	if (forPlatform !== "concert" && entity !== "concert") {
-		return NextResponse.json(
-			{ error: "Error creating checkout session" },
-			{
-				status: 500,
-			},
+	if (forPlatform === "concert" && entity === "concert") {
+		const paidSeatIds = session.metadata?.seats
+			? (JSON.parse(session.metadata?.seats) as string[])
+			: ([] as string[]);
+
+		const userId = session.metadata?.user_id;
+
+		const collectionMethod = session.custom_fields.find(
+			(item) => item.key === collectionMethodKey,
 		);
-	}
 
-	const paidSeatIds = session.metadata?.seats
-		? (JSON.parse(session.metadata?.seats) as string[])
-		: ([] as string[]);
+		const collectionMethodValue = collectionMethod?.dropdown?.value;
 
-	const userId = session.metadata?.user_id;
-
-	const collectionMethod = session.custom_fields.find(
-		(item) => item.key === collectionMethodKey,
-	);
-
-	const collectionMethodValue = collectionMethod?.dropdown?.value;
-
-	if (!paidSeatIds.length) {
-		return NextResponse.json(
-			{ error: "Paid seats is less than 1, weird!" },
-			{
-				status: 500,
-			},
-		);
-	}
-
-	if (!userId) {
-		return NextResponse.json(
-			{ error: "No userId found, weird!" },
-			{
-				status: 500,
-			},
-		);
-	}
-
-	await db.$transaction(async (tx) => {
-		const seats = await tx.seat.aggregate({
-			where: {
-				id: {
-					in: paidSeatIds,
+		if (!paidSeatIds.length) {
+			return NextResponse.json(
+				{ error: "Paid seats is less than 1, weird!" },
+				{
+					status: 500,
 				},
-			},
-			_sum: {
-				price: true,
-			},
-		});
-		const totalSeatsAmount = seats._sum.price ?? 0;
-		const paidAmount = latestCharge!.amount / 100;
-		const processingFeeAmount = paidAmount - totalSeatsAmount;
+			);
+		}
 
-		await tx.order.create({
-			data: {
-				checkoutSessionId: session.id,
-				userId,
-				seat: {
-					connect: paidSeatIds.map((seatId) => ({ id: seatId })),
+		if (!userId) {
+			return NextResponse.json(
+				{ error: "No userId found, weird!" },
+				{
+					status: 500,
 				},
-				collectionMethod: collectionMethodValue ?? "event",
-				receiptUrl: latestCharge?.receipt_url,
-				paymentMethod: "stripe",
-				paidAmount,
-				processingFeeAmount,
-			},
-		});
+			);
+		}
 
-		await tx.seat.updateMany({
-			where: {
-				id: {
-					in: paidSeatIds,
+		await db.$transaction(async (tx) => {
+			const seats = await tx.seat.aggregate({
+				where: {
+					id: {
+						in: paidSeatIds,
+					},
 				},
-			},
-			data: {
-				status: "OCCUPIED",
-				lockedTill: null,
-				lockedByUserId: null,
-			},
+				_sum: {
+					price: true,
+				},
+			});
+			const totalSeatsAmount = seats._sum.price ?? 0;
+			const paidAmount = latestCharge!.amount / 100;
+			const processingFeeAmount = paidAmount - totalSeatsAmount;
+
+			await tx.order.create({
+				data: {
+					checkoutSessionId: session.id,
+					userId,
+					seat: {
+						connect: paidSeatIds.map((seatId) => ({ id: seatId })),
+					},
+					collectionMethod: collectionMethodValue ?? "event",
+					receiptUrl: latestCharge?.receipt_url,
+					paymentMethod: "stripe",
+					paidAmount,
+					processingFeeAmount,
+				},
+			});
+
+			await tx.seat.updateMany({
+				where: {
+					id: {
+						in: paidSeatIds,
+					},
+				},
+				data: {
+					status: "OCCUPIED",
+					lockedTill: null,
+					lockedByUserId: null,
+				},
+			});
 		});
-	});
+	}
 }
 
 export async function POST(req: NextRequest) {
