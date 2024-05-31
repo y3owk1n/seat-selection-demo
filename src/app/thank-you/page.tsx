@@ -57,7 +57,9 @@ export default async function ThankYou({
 					<Button asChild variant="link" className="p-0">
 						<Link href={`/order/detail/${order.id}`}>here</Link>
 					</Button>
-					. Contact us if you have any questions.
+					. Our team will be in contact with you soon on ticket
+					collection details. Of course, you can anytime contact us if
+					you have any questions.
 				</p>
 			</div>
 			<div className="flex gap-4">
