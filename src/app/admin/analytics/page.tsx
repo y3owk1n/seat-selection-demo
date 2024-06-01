@@ -51,7 +51,11 @@ export default async function Orders(): Promise<JSX.Element> {
 						<CardTitle className="text-4xl">
 							{analytic.soldSeatsNumber}{" "}
 							<span className="text-xs">
-								seats / {analytic.totalSeatsNumber} seats
+								seats /{" "}
+								{analytic.totalSeatsNumber -
+									analytic.totalBlockedWithoutOrderSeatsNumber}{" "}
+								seats (Reserved:{" "}
+								{analytic.totalBlockedWithoutOrderSeatsNumber})
 							</span>
 						</CardTitle>
 					</CardHeader>
