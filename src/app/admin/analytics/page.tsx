@@ -1,17 +1,30 @@
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import AdminNav from "@/components/shared/admin-nav";
 import UserInfoBar from "@/components/shared/user-info-bar";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardDescription,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { siteConfig } from "@/lib/config";
-import { formatCurrency } from "@/lib/formatter";
+import { formatCurrency, formatNumberToKPlusMPlus } from "@/lib/formatter";
 import { generateCustomMetadata } from "@/lib/utils";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
+import { ChevronsUpDown } from "lucide-react";
 import { notFound } from "next/navigation";
 
 const title = "Analytics - Admin";
@@ -52,22 +65,39 @@ export default async function Orders(): Promise<JSX.Element> {
 							{analytic.soldSeatsNumber}{" "}
 							<span className="text-xs">
 								seats /{" "}
-								{analytic.totalSeatsNumber -
-									analytic.totalBlockedWithoutOrderSeatsNumber}{" "}
-								seats (Reserved:{" "}
-								{analytic.totalBlockedWithoutOrderSeatsNumber})
+								<span className="font-normal">
+									{analytic.totalSeatsNumber -
+										analytic.totalBlockedWithoutOrderSeatsNumber}
+								</span>{" "}
+								seats
 							</span>
 						</CardTitle>
+
+						<div>
+							<CardDescription className="mt-4">
+								Reserved:{" "}
+								{analytic.totalBlockedWithoutOrderSeatsNumber}{" "}
+								seats
+							</CardDescription>
+						</div>
 					</CardHeader>
 				</Card>
 				<Card>
 					<CardHeader>
 						<CardDescription>Total Revenue</CardDescription>
-						<CardTitle className="text-4xl">
-							{formatCurrency(
+						<CardTitle className="text-4xl text-left">
+							RM{" "}
+							{formatNumberToKPlusMPlus(
 								analytic.totalRevenue._sum.paidAmount ?? 0,
 							)}
 						</CardTitle>
+						<div>
+							<CardDescription className="mt-4">
+								{formatCurrency(
+									analytic.totalRevenue._sum.paidAmount ?? 0,
+								)}
+							</CardDescription>
+						</div>
 					</CardHeader>
 				</Card>
 			</div>
