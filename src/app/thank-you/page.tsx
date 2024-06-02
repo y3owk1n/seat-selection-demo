@@ -43,7 +43,7 @@ export default async function ThankYou({
 	}
 
 	return (
-		<main className="container max-w-4xl flex flex-col gap-8 py-10 mb-24">
+		<main className="container mb-24 flex max-w-4xl flex-col gap-8 py-10">
 			<UserInfoBar session={session} />
 			<div className="flex gap-4">
 				<h1 className="flex-1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">

@@ -201,7 +201,7 @@ export default function ConcertSeatDetail(
 
 	return (
 		<>
-			<div ref={ref} className="w-full items-center flex flex-col gap-8">
+			<div ref={ref} className="flex w-full flex-col items-center gap-8">
 				<ButtonGroup>
 					<Button
 						variant="outline"
@@ -210,7 +210,7 @@ export default function ConcertSeatDetail(
 							zoom.zoomOut();
 						}}
 					>
-						<ZoomOut className="w-5 h-5" />
+						<ZoomOut className="h-5 w-5" />
 					</Button>
 					<Button variant="outline" disabled>
 						{zoom.zoomLevel}%
@@ -222,15 +222,15 @@ export default function ConcertSeatDetail(
 							zoom.zoomIn();
 						}}
 					>
-						<ZoomIn className="w-5 h-5" />
+						<ZoomIn className="h-5 w-5" />
 					</Button>
 				</ButtonGroup>
 
-				<div className="border border-primary w-full h-10 grid items-center text-center">
+				<div className="grid h-10 w-full items-center border border-primary text-center">
 					Stage
 				</div>
 
-				<ScrollArea className="w-full aspect-square mx-auto">
+				<ScrollArea className="mx-auto aspect-square w-full">
 					<div>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -258,16 +258,16 @@ export default function ConcertSeatDetail(
 					opacity: isInView ? 1 : 0,
 					transition: "all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1)",
 				}}
-				className="fixed bottom-0 md:bottom-8 z-10 w-full left-0"
+				className="fixed bottom-0 left-0 z-10 w-full md:bottom-8"
 			>
-				<div className="md:max-w-4xl mx-auto w-full justify-between items-center md:rounded-md flex gap-4 bg-primary text-primary-foreground p-4 border">
+				<div className="mx-auto flex w-full items-center justify-between gap-4 border bg-primary p-4 text-primary-foreground md:max-w-4xl md:rounded-md">
 					<div className="space-y-1">
-						<div className="inline-flex gap-1 items-center flex-wrap">
+						<div className="inline-flex flex-wrap items-center gap-1">
 							<p className="text-sm font-medium leading-none">
 								Selected Seats:{" "}
 							</p>
 
-							<div className="inline-flex gap-1 flex-wrap">
+							<div className="inline-flex flex-wrap gap-1">
 								{seatSelection.selectedSeat
 									.sort((a, b) =>
 										a.label.localeCompare(b.label),
@@ -304,7 +304,7 @@ export default function ConcertSeatDetail(
 								Pay Now
 							</Button>
 							<Button
-								className="text-secondary text-xs"
+								className="text-xs text-secondary"
 								type="button"
 								variant="link"
 								size="link"

@@ -34,7 +34,7 @@ export default async function Orders(): Promise<JSX.Element> {
 	const analytic = await api.admin.analytic.sales();
 
 	return (
-		<main className="container max-w-4xl flex flex-col gap-8 py-10 mb-24">
+		<main className="container mb-24 flex max-w-4xl flex-col gap-8 py-10">
 			<UserInfoBar session={session} />
 			<AdminNav />
 			<div className="flex items-center gap-4">
@@ -72,7 +72,7 @@ export default async function Orders(): Promise<JSX.Element> {
 				<Card>
 					<CardHeader>
 						<CardDescription>Total Revenue</CardDescription>
-						<CardTitle className="text-4xl text-left">
+						<CardTitle className="text-left text-4xl">
 							RM{" "}
 							{formatNumberToKPlusMPlus(
 								analytic.totalRevenue._sum.paidAmount ?? 0,

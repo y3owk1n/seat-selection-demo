@@ -43,7 +43,7 @@ export default async function Orders(props: OrdersProps): Promise<JSX.Element> {
 	});
 
 	return (
-		<main className="container max-w-4xl flex flex-col gap-8 py-10 mb-24">
+		<main className="container mb-24 flex max-w-4xl flex-col gap-8 py-10">
 			<UserInfoBar session={session} />
 			<AdminNav />
 			<div className="flex items-center gap-4">

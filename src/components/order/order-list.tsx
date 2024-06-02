@@ -71,7 +71,7 @@ export default function OrderList(props: OrderListProps) {
 									</Button>
 								</TableCell>
 								<TableCell className="table-cell">
-									<div className="flex gap-2 items-center flex-nowrap">
+									<div className="flex flex-nowrap items-center gap-2">
 										{order.seats.map((seat) => (
 											<Badge key={seat}>{seat}</Badge>
 										))}

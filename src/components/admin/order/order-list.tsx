@@ -119,7 +119,7 @@ export default function OrderList(props: OrderListProps) {
 				<CardDescription>All orders are listed here.</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<div className="flex mb-4">
+				<div className="mb-4 flex">
 					<Input
 						type="search"
 						placeholder={`Search by ${
@@ -131,7 +131,7 @@ export default function OrderList(props: OrderListProps) {
 						onChange={(event) => {
 							setCurrentSearchTerm(event.target.value);
 						}}
-						className="w-full max-w-full flex-[100%] md:max-w-sm rounded-r-none border-r-0"
+						className="w-full max-w-full flex-[100%] rounded-r-none border-r-0 md:max-w-sm"
 					/>
 					<Select
 						value={currentSearchType}
@@ -176,7 +176,7 @@ export default function OrderList(props: OrderListProps) {
 									</Button>
 								</TableCell>
 								<TableCell className="table-cell">
-									<div className="flex gap-2 items-center flex-nowrap">
+									<div className="flex flex-nowrap items-center gap-2">
 										{order.seats.map((seat) => (
 											<Badge key={seat}>{seat}</Badge>
 										))}
@@ -227,7 +227,7 @@ export default function OrderList(props: OrderListProps) {
 									onClick={goToPreviousPage}
 								/>
 							</PaginationItem>
-							<span className="text-xs px-4">{props.page}</span>
+							<span className="px-4 text-xs">{props.page}</span>
 							<PaginationItem>
 								<PaginationNext
 									onClick={goToNextPage}

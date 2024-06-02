@@ -45,7 +45,7 @@ export default function OrderDetailCard(props: OrderDetailCardProps) {
 					</CardDescription>
 
 					<div>
-						<Button variant="link" className="p-0 mt-4">
+						<Button variant="link" className="mt-4 p-0">
 							<a
 								target="_blank"
 								rel="noreferrer"

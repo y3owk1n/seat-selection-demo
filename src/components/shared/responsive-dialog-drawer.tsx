@@ -86,7 +86,7 @@ export function ResponsiveDialogDrawer({
 						) : null}
 					</DialogHeader>
 
-					<ScrollArea className="max-h-[500px] h-full">
+					<ScrollArea className="h-full max-h-[500px]">
 						{children}
 					</ScrollArea>
 				</DialogContent>
