@@ -86,7 +86,7 @@ export function ResponsiveDialogDrawer({
 						) : null}
 					</DialogHeader>
 
-					<ScrollArea className="max-h-[500px]">
+					<ScrollArea className="max-h-[500px] h-full">
 						{children}
 					</ScrollArea>
 				</DialogContent>
@@ -105,7 +105,9 @@ export function ResponsiveDialogDrawer({
 					) : null}
 				</DrawerHeader>
 
-				<div className="px-4">{children}</div>
+				<ScrollArea>
+					<div className="max-h-[400px] px-4">{children}</div>
+				</ScrollArea>
 				<DrawerFooter className="pt-2">
 					<DrawerClose asChild>
 						<Button variant="outline">Back</Button>
