@@ -17,6 +17,9 @@ export default function AdminNav() {
 			>
 				<Link href="/admin/analytics">Analytics</Link>
 			</Button>
+			<Button variant={isActive("/admin/seat") ? "default" : "outline"}>
+				<Link href="/admin/seat">Seats</Link>
+			</Button>
 			<Button variant={isActive("/admin/order") ? "default" : "outline"}>
 				<Link href="/admin/order">Orders</Link>
 			</Button>

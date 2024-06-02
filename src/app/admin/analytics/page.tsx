@@ -1,30 +1,17 @@
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import AdminNav from "@/components/shared/admin-nav";
 import UserInfoBar from "@/components/shared/user-info-bar";
-import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardDescription,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { siteConfig } from "@/lib/config";
 import { formatCurrency, formatNumberToKPlusMPlus } from "@/lib/formatter";
 import { generateCustomMetadata } from "@/lib/utils";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
-import { ChevronsUpDown } from "lucide-react";
 import { notFound } from "next/navigation";
 
 const title = "Analytics - Admin";
