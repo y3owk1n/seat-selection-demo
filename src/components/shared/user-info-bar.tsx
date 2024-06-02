@@ -22,11 +22,11 @@ export default function UserInfoBar(props: UserInfoBarProps): JSX.Element {
 				<Image
 					src={logoImg}
 					alt="logo"
-					className="rounded-full size-10"
+					className="size-10 rounded-full"
 				/>
 			</div>
 
-			<div className="border rounded-md p-2 text-sm flex gap-2 flex-nowrap justify-between items-center w-full">
+			<div className="flex w-full flex-nowrap items-center justify-between gap-2 rounded-md border p-2 text-sm">
 				{props.session ? (
 					<div className="flex items-center gap-2">
 						<Avatar className="size-6">

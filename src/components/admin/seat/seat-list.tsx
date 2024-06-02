@@ -102,7 +102,7 @@ export default function SeatList(props: SeatListProps) {
 				<CardDescription>All seats are listed here.</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<div className="flex mb-4">
+				<div className="mb-4 flex">
 					<Input
 						type="search"
 						placeholder="Search by Seat Label"
@@ -132,7 +132,7 @@ export default function SeatList(props: SeatListProps) {
 							<TableRow key={seat.id}>
 								<TableCell>{seat.label}</TableCell>
 								<TableCell className="table-cell">
-									<div className="flex gap-2 items-center flex-nowrap">
+									<div className="flex flex-nowrap items-center gap-2">
 										<Badge
 											variant={
 												seat.status === "EMPTY"
@@ -246,7 +246,7 @@ export default function SeatList(props: SeatListProps) {
 									onClick={goToPreviousPage}
 								/>
 							</PaginationItem>
-							<span className="text-xs px-4">{props.page}</span>
+							<span className="px-4 text-xs">{props.page}</span>
 							<PaginationItem>
 								<PaginationNext
 									onClick={goToNextPage}

@@ -29,7 +29,7 @@ export default async function Home(): Promise<JSX.Element> {
 	const session = await getSessionAndCheckRedirect();
 
 	return (
-		<main className="container max-w-4xl flex flex-col gap-8 py-10 mb-24">
+		<main className="container mb-24 flex max-w-4xl flex-col gap-8 py-10">
 			<UserInfoBar session={session} />
 			<div className="flex gap-4">
 				<h1 className="flex-1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
@@ -48,15 +48,15 @@ export default async function Home(): Promise<JSX.Element> {
 					storylines expressed in movements. Join us as we venture
 					into a whole new experience of ‘The Twenty Four’.
 				</p>
-				<ul className="flex gap-4 flex-wrap">
-					<li className="inline-flex gap-2 items-center">
-						<Pin className="w-5 h-5" />
+				<ul className="flex flex-wrap gap-4">
+					<li className="inline-flex items-center gap-2">
+						<Pin className="h-5 w-5" />
 						<span className="text-sm">
 							(KLPAC) Kuala Lumpur Performing Arts Centre
 						</span>
 					</li>
-					<li className="inline-flex gap-2 items-center">
-						<Calendar className="w-5 h-5" />
+					<li className="inline-flex items-center gap-2">
+						<Calendar className="h-5 w-5" />
 						<span className="text-sm">30th June 2024, 6:00pm</span>
 					</li>
 				</ul>
@@ -64,7 +64,7 @@ export default async function Home(): Promise<JSX.Element> {
 				<div>
 					<Button asChild>
 						<Link href="#select-seats">
-							<Ticket className="size-4 mr-2" />
+							<Ticket className="mr-2 size-4" />
 							Select Your Seat(s)
 						</Link>
 					</Button>
@@ -92,21 +92,21 @@ export default async function Home(): Promise<JSX.Element> {
 					Click the following boxes to select your desired ticket
 				</p>
 
-				<ul className="flex gap-4 flex-wrap">
-					<li className="inline-flex gap-2 items-center">
-						<div className="size-4 rounded-full bg-pink-500 border-2 border-primary" />
+				<ul className="flex flex-wrap gap-4">
+					<li className="inline-flex items-center gap-2">
+						<div className="size-4 rounded-full border-2 border-primary bg-pink-500" />
 						<span className="text-sm">RM 128 (Tier 1)</span>
 					</li>
-					<li className="inline-flex gap-2 items-center">
-						<div className="size-4 rounded-full bg-yellow-500 border-2 border-primary" />
+					<li className="inline-flex items-center gap-2">
+						<div className="size-4 rounded-full border-2 border-primary bg-yellow-500" />
 						<span className="text-sm">RM 88 (Tier 2)</span>
 					</li>
-					<li className="inline-flex gap-2 items-center">
-						<div className="size-4 rounded-full opacity-50 bg-primary border-2 border-primary" />
+					<li className="inline-flex items-center gap-2">
+						<div className="size-4 rounded-full border-2 border-primary bg-primary opacity-50" />
 						<span className="text-sm">Occupied</span>
 					</li>
-					<li className="inline-flex gap-2 items-center">
-						<div className="size-4 rounded-full bg-orange-500 border-2 border-primary" />
+					<li className="inline-flex items-center gap-2">
+						<div className="size-4 rounded-full border-2 border-primary bg-orange-500" />
 						<span className="text-sm">Locked For You</span>
 					</li>
 				</ul>

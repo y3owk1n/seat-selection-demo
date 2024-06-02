@@ -7,7 +7,7 @@ interface YouTubePlayerProps {
 
 export default function YouTubePlayer(props: YouTubePlayerProps) {
 	return (
-		<div className="relative rounded-md overflow-hidden pt-[56.25%]">
+		<div className="relative overflow-hidden rounded-md pt-[56.25%]">
 			<ReactPlayer
 				style={{
 					position: "absolute",
@@ -17,7 +17,7 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
 				url={`https://www.youtube.com/watch?v=${props.videoId}`}
 				light={
 					<img
-						className="w-full h-full aspect-video object-cover"
+						className="aspect-video h-full w-full object-cover"
 						// src={`https://img.youtube.com/vi/${props.videoId}/hqdefault.jpg`}
 						src={`https://i.ytimg.com/vi/${props.videoId}/maxresdefault.jpg`}
 						alt="Thumbnail"

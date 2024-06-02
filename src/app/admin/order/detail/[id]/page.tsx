@@ -77,13 +77,13 @@ export default async function OrderDetail(
 	}
 
 	return (
-		<main className="container max-w-4xl flex flex-col gap-8 py-10 mb-24">
+		<main className="container mb-24 flex max-w-4xl flex-col gap-8 py-10">
 			<UserInfoBar session={session} />
 			<AdminNav />
 			<div>
 				<Button variant="link" size="link" asChild>
 					<Link href="/admin/order">
-						<ArrowLeft className="size-4 mr-2" /> Back to orders
+						<ArrowLeft className="mr-2 size-4" /> Back to orders
 					</Link>
 				</Button>
 			</div>

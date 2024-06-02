@@ -47,7 +47,7 @@ export default function OrderDetailCard(props: OrderDetailCardProps) {
 					</CardDescription>
 
 					<div>
-						<Button variant="link" className="p-0 mt-4">
+						<Button variant="link" className="mt-4 p-0">
 							<a
 								target="_blank"
 								rel="noreferrer"
@@ -117,7 +117,7 @@ export default function OrderDetailCard(props: OrderDetailCardProps) {
 										</dt>
 										<dd>
 											<a
-												className="hover:underline underline-offset-4"
+												className="underline-offset-4 hover:underline"
 												href={`mailto:${props.user.email}`}
 											>
 												{props.user.email}
@@ -130,7 +130,7 @@ export default function OrderDetailCard(props: OrderDetailCardProps) {
 										</dt>
 										<dd>
 											<a
-												className="hover:underline underline-offset-4"
+												className="underline-offset-4 hover:underline"
 												href={`tel:${props.user.phone}`}
 											>
 												{props.user.phone}

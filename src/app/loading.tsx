@@ -2,9 +2,9 @@ import { Loader } from "lucide-react";
 
 export default function Loading() {
 	return (
-		<div className="w-svw h-svh grid place-items-center">
+		<div className="grid h-svh w-svw place-items-center">
 			<div>
-				<Loader className="size-10 mx-auto mb-4 animate-spin" />
+				<Loader className="mx-auto mb-4 size-10 animate-spin" />
 				<p className="text-center">Loading contents</p>
 			</div>
 		</div>
