@@ -99,7 +99,7 @@ export default function SeatList(props: SeatListProps) {
 	return (
 		<Card>
 			<CardHeader>
-				<CardDescription>All orders are listed here.</CardDescription>
+				<CardDescription>All seats are listed here.</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<div className="flex mb-4">
@@ -229,7 +229,7 @@ export default function SeatList(props: SeatListProps) {
 			</CardContent>
 			<CardFooter className="grid gap-2">
 				<div className="text-xs text-muted-foreground">
-					Total <strong>{props.totalRecords}</strong> orders in record
+					Total <strong>{props.totalRecords}</strong> seats in record
 				</div>
 				<div>
 					<Pagination>
