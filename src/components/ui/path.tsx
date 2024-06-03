@@ -10,7 +10,7 @@ const PathButton = React.forwardRef<
 		role="button"
 		ref={ref}
 		className={cn(
-			"fill-transparent stroke-primary relative hover:stroke-primary/90",
+			"relative fill-transparent stroke-primary hover:stroke-primary/90",
 			className,
 		)}
 		{...props}

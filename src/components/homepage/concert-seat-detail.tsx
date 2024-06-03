@@ -63,7 +63,7 @@ function SeatItem({
 				seat.status === "OCCUPIED" && !(isMyLockedSeat && isLocked)
 			}
 			className={cn(
-				"relative ring aria-[disabled=true]:pointer-events-none aria-[disabled=true]:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+				"relative ring transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring aria-[disabled=true]:pointer-events-none aria-[disabled=true]:opacity-50",
 				!selected && "aria-[disabled=true]:fill-primary",
 				seat.price === 88
 					? "fill-yellow-500 hover:fill-yellow-500/90"
