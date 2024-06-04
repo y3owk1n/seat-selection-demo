@@ -1,6 +1,7 @@
 import OrderDetailCard from "@/components/admin/order/order-detail-card";
 import { ModeToggle } from "@/components/dark-mode-toggle";
 import AdminNav from "@/components/shared/admin-nav";
+import BackButton from "@/components/shared/back-button";
 import UserInfoBar from "@/components/shared/user-info-bar";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/config";
@@ -81,11 +82,7 @@ export default async function OrderDetail(
 			<UserInfoBar session={session} />
 			<AdminNav />
 			<div>
-				<Button variant="link" size="link" asChild>
-					<Link href="/admin/order">
-						<ArrowLeft className="mr-2 size-4" /> Back to orders
-					</Link>
-				</Button>
+				<BackButton title="orders" />
 			</div>
 			<div className="flex items-center gap-4">
 				<h1 className="flex-1 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
