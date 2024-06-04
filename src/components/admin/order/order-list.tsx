@@ -36,6 +36,7 @@ import {
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useQueryString } from "@/hooks/use-query-string";
 import { formatCurrency } from "@/lib/formatter";
+import { type User } from "@prisma/client";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
@@ -58,6 +59,7 @@ interface OrderData {
 	receiptUrl: string | null;
 	paidAt: Date;
 	paidAmount: number;
+	user: Partial<Pick<User, "fullName" | "phone">>;
 }
 
 export default function OrderList(props: OrderListProps) {
@@ -150,6 +152,8 @@ export default function OrderList(props: OrderListProps) {
 					<TableHeader>
 						<TableRow>
 							<TableHead>Order ID</TableHead>
+							<TableHead className="table-cell">Name</TableHead>
+							<TableHead className="table-cell">Phone</TableHead>
 							<TableHead className="table-cell">Seats</TableHead>
 							<TableHead className="table-cell">
 								Receipt
@@ -175,14 +179,20 @@ export default function OrderList(props: OrderListProps) {
 										</Link>
 									</Button>
 								</TableCell>
-								<TableCell className="table-cell">
+								<TableCell className="table-cell min-w-40">
+									{order.user.fullName ?? "-"}
+								</TableCell>
+								<TableCell className="table-cell min-w-40">
+									{order.user.phone ?? "-"}
+								</TableCell>
+								<TableCell className="table-cell min-w-40">
 									<div className="flex flex-nowrap items-center gap-2">
 										{order.seats.map((seat) => (
 											<Badge key={seat}>{seat}</Badge>
 										))}
 									</div>
 								</TableCell>
-								<TableCell className="table-cell">
+								<TableCell className="table-cell min-w-40">
 									<Button variant="link" className="p-0">
 										<a
 											target="_blank"
@@ -193,12 +203,12 @@ export default function OrderList(props: OrderListProps) {
 										</a>
 									</Button>
 								</TableCell>
-								<TableCell className="table-cell">
+								<TableCell className="table-cell min-w-40">
 									{order.paidAt
 										? dayjs(order.paidAt).fromNow()
 										: "-"}
 								</TableCell>
-								<TableCell className="text-right">
+								<TableCell className="min-w-40 text-right">
 									{order.paidAmount
 										? formatCurrency(order.paidAmount)
 										: "-"}

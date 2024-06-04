@@ -103,6 +103,12 @@ export const orderRouter = createTRPCRouter({
 					},
 					include: {
 						seat: true,
+						user: {
+							select: {
+								fullName: true,
+								phone: true,
+							},
+						},
 					},
 					orderBy: {
 						createdAt: "desc",
@@ -120,6 +126,10 @@ export const orderRouter = createTRPCRouter({
 				receiptUrl: order.receiptUrl,
 				paidAt: order.createdAt,
 				paidAmount: order.paidAmount,
+				user: {
+					fullName: order.user?.fullName,
+					phone: order.user?.phone,
+				},
 			}));
 
 			return { data: formattedOrders, count };
